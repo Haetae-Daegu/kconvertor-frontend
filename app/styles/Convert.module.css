@@ -1,0 +1,53 @@
+.convertContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+  }
+  
+  .convertBox {
+    width: 300px;
+    height: 200px;
+    background: linear-gradient(45deg, #9b59b6, #f39c12);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .convertBox h2 {
+    font-size: 2rem;
+    color: black;
+  }
+  
+  .convertBox p {
+    font-size: 1.2rem;
+    color: black;
+    margin: 0.5rem 0;
+  }
+  
+  .convertBox h3 {
+    font-size: 2rem;
+    color: black;
+  }
+  
+  .convertButton {
+    margin-top: 1rem;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    background: linear-gradient(45deg, #ff6b6b, #f7b731);
+    color: white;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+  }
+  
+  .convertButton:hover {
+    background: linear-gradient(45deg, #ff4757, #ffa502);
+  }
+  

@@ -9,7 +9,7 @@
   background-repeat: no-repeat;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
 }
 
 .overlay {
@@ -21,9 +21,14 @@
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center; */
+  /* align-items: center; */
   text-align: center;
+}
+
+.titlePanel {
+  top: 0;
+  left: 0;
 }
 
 .title {
