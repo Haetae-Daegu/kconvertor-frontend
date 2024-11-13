@@ -1,4 +1,4 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import styles from '../styles/Convert.module.css';
 
 export default function Convert() {
@@ -13,9 +13,21 @@ export default function Convert() {
         ...prevState,
         [fieldName]: fieldValue
       }));
-
-      
     };
+
+
+    function submitForm() {
+      console.log("tyoto")
+      useEffect(() => {
+        fetch('/currency/')
+          .then(res => res.json())
+          .then(data => {
+            console.log(data) 
+            setMessage(data.message);
+            setLoading(false);
+          })
+      }, [])
+    }
 
     return (
       <div className={styles.convertContainer}>
@@ -26,7 +38,7 @@ export default function Convert() {
                 <input type="number" name="euros" onChange={handleInput}/>
             </div>
             <h2>WONS</h2>
-            <button className={styles.convertButton} type="submit">Convert</button>
+            <button className={styles.convertButton} onChange={submitForm}>Convert</button>
           </form>           
         </div>
       </div>
