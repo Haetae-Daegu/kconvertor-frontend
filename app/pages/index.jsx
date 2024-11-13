@@ -7,7 +7,7 @@ export default function Home() {
       <div className={styles.titlePanel}>
         <h1 className={styles.title}>Convertisseur de monnaie</h1>
         <p className={styles.subtitle}>Korean Convertor</p>
-        <Convert/>
+        {/* <Convert/> */}
       </div>
     </div>
   );
