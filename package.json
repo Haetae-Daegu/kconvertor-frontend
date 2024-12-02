@@ -3,7 +3,7 @@
   "proxy": "http://localhost:5000/",
   "scripts": {
     "build": "next build",
-    "dev": "next dev",
+    "dev": "next",
     "start": "next start"
   },
   "dependencies": {

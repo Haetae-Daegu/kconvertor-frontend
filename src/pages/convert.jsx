@@ -6,16 +6,29 @@ const Convert = () => {
   const [fromCurrency, setFromCurrency] = useState("EUR");
   const [toCurrency, setToCurrency] = useState("KRW");
   const [result, setResult] = useState(null);
+  const [error, setError] = useState(null)
 
   const handleConvert = () => {
-    const conversionRate = 0.85;
     axios.get('http://127.0.0.1:5000/currency/', {})
-      .then(res => {
-        const from = res.data["KRW"]
-        setResult(from);
-
+      .then((response) => {
+        setError(null)
+        console.log(response)
+        const from_currency = response.data["KRW"]
+        setResult(from_currency);
       })
-    setResult((amount * conversionRate).toFixed(2));
+      .catch((error) => {
+        setResult(null)
+        if (error.response) {
+          setError(error.response)
+          console.log("Response Error", error.response)
+        } else if (error.request) {
+          setError("Something is wrong with the request")
+          console.log("Request error", error.request)
+        } else {
+          setError("There is an error from server side")
+          console.log("Error", error.message)
+        }
+      })
   };
 
   return (
@@ -54,12 +67,19 @@ const Convert = () => {
           Convert
         </button>
       </div>
-      {result !== null && (
+      {result !== null && error == null && (
         <div className="mt-4 rounded-lg bg-gray-100 p-4 text-center">
           <p className="text-lg font-medium text-gray-800">
             {amount} {fromCurrency} = {result} {toCurrency}
           </p>
         </div>
+      )} 
+      {error !== null && result == null && (
+        <div className="mt-4 rounded-lg bg-red-100 p-4 text-center">
+        <p className="text-lg font-medium text-red-600">
+          {error}
+        </p>
+      </div>
       )}
     </div>
   );
