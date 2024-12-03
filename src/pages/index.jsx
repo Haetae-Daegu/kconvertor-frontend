@@ -5,8 +5,7 @@ export default function Main() {
   return (
     <div className={styles.container}>
       <div className={styles.titlePanel}>
-        <h1 className={styles.title}>Convertisseur de monnaie</h1>
-        <p className={styles.subtitle}>Korean Convertor</p>
+        <h1 className={styles.title}>Korean Convertor</h1>
         <Convert/>
       </div>
     </div>
