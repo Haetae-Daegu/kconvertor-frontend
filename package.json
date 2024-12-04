@@ -3,11 +3,12 @@
   "proxy": "http://localhost:5000/",
   "scripts": {
     "build": "next build",
-    "dev": "next",
+    "dev": "dotenv -e .env.development next",
     "start": "next start"
   },
   "dependencies": {
     "axios": "^0.24.0",
+    "dotenv-cli": "^7.4.4",
     "next": "latest",
     "react": "18.2.0",
     "react-dom": "18.2.0"

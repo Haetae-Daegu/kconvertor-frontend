@@ -2,7 +2,7 @@ import {useEffect, useState} from "react"
 import axios from 'axios';
 
 
-const API_URL = process.env.API_ENDPOINT
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const Convert = () => {
   const [amount, setAmount] = useState("");
@@ -19,7 +19,7 @@ const Convert = () => {
       return
     }
 
-    axios.post(`http://127.0.0.1:5000/currency/`, {
+    axios.post(`${API_URL}/currency/`, {
       from_currency: fromCurrency,
       to_currency: toCurrency,
       amount: amount
@@ -36,7 +36,7 @@ const Convert = () => {
         if (error.response.status === 500) {
           setError("Internal server error: Please try again later.");
         } else {
-          setError(`Error ${error.response.status}: ${message}`);
+          setError(`Error ${error.response.status}: ${error.response.message}`);
         }
       } else if (error.request) {
         setError("Service unavailable. Please try again later.")
