@@ -17,7 +17,7 @@ const Convert = () => {
       return
     }
 
-    axios.post("api/proxy/currency", {
+    axios.post("currency", {
       from_currency: fromCurrency,
       to_currency: toCurrency,
       amount: amount
