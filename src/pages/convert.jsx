@@ -1,6 +1,8 @@
-import {useState} from "react"
+import {useEffect, useState} from "react"
 import axios from 'axios';
 
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const Convert = () => {
   const [amount, setAmount] = useState("");
@@ -17,14 +19,10 @@ const Convert = () => {
       return
     }
 
-    axios.post("currency", {
+    axios.post(`${API_URL}/currency/`, {
       from_currency: fromCurrency,
       to_currency: toCurrency,
       amount: amount
-    }, {
-      headers: {
-        "Content-Type": "application/json",
-      },
     })
     .then((response) => {
       setError(null)
