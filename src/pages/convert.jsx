@@ -6,7 +6,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 const Convert = () => {
   const [amount, setAmount] = useState("");
-  const [tmpAmount, setTmpAmount] = useState("")
+  const [inputAmount, setInputAmount] = useState("")
   const [fromCurrency, setFromCurrency] = useState("EUR");
   const [toCurrency, setToCurrency] = useState("KRW");
   const [result, setResult] = useState(null);
@@ -26,7 +26,7 @@ const Convert = () => {
     })
     .then((response) => {
       setError(null)
-      setTmpAmount(amount)
+      setInputAmount(amount)
       const to_currency = response.data[toCurrency]
       setResult(to_currency);
     })
@@ -46,7 +46,10 @@ const Convert = () => {
     })
   };
 
-  const handleSwapCurrencies = () => {
+  const swapCurrencies = () => {
+    let tmp = inputAmount
+    setInputAmount(result)
+    setResult(tmp)
     setFromCurrency((prev) => (prev === "EUR" ? "KRW" : "EUR"));
     setToCurrency((prev) => (prev === "EUR" ? "KRW" : "EUR"));
   };
@@ -78,7 +81,7 @@ const Convert = () => {
             <option value="KRW">KRW</option>
           </select>
           <button
-            onClick={handleSwapCurrencies}
+            onClick={swapCurrencies}
             className="rounded-lg bg-blue-500 p-2 hover:bg-gray-300"
           >
             ⇆
@@ -106,7 +109,7 @@ const Convert = () => {
       {result !== null && error == null && (
         <div className="mt-4 rounded-lg bg-gray-100 p-4 text-center">
           <p className="text-lg font-medium text-gray-800">
-            {tmpAmount} {fromCurrency} = {result} {toCurrency}
+            {inputAmount} {fromCurrency} = {result} {toCurrency}
           </p>
         </div>
       )}
