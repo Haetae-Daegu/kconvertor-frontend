@@ -4,16 +4,16 @@ import { Data } from '../../utils/mockData';
 
 import { CategoryScale } from "chart.js"; 
 import { useState } from "react";
+import { Animation } from 'rsuite';
 
 Chart.register(CategoryScale)
 
 const CurrencyChart = () => {
-  console.log(Data.map((data) => data.year))
+  const [isVisible, setIsVisible] = useState(true)
   const [chartData, setChartData] = useState({
     labels: Data.map((data) => data.day), 
     datasets: [
       {
-        label: "mockData ",
         data: Data.map((data) => data.currency),
         backgroundColor: [
           "rgba(75,192,192,1)",
@@ -28,9 +28,24 @@ const CurrencyChart = () => {
     ]
   })
 
+  function visibility() {
+    setIsVisible((isVisible) => !isVisible);
+  }
+
   return (
     <div className="mx-auto max-w-3xl flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-3xl md:p-8 mt-6">
-      <LineChart chartData={chartData} />
+      <div className="flex gap-4">
+        <h1 className="text-xl font-bold text-gray-800">
+          Graph Currency
+        </h1>
+        <button
+          className="ml-auto rounded-lg bg-blue-500 p-2 hover:bg-gray-300 m6"
+          onClick={visibility}
+        >
+          {isVisible ? "-" : "+"}
+        </button>
+      </div>
+        {isVisible && <LineChart chartData={chartData} />}
     </div>
   );
 }

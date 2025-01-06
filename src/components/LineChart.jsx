@@ -10,7 +10,7 @@ const LineChart = ({ chartData }) => (
           plugins: {
             title: {
               display: true,
-              text: "mockData"
+              text: "Korean won"
             },
             legend: {
               labels: {
