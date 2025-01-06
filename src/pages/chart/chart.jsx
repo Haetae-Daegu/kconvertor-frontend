@@ -10,11 +10,11 @@ Chart.register(CategoryScale)
 const CurrencyChart = () => {
   console.log(Data.map((data) => data.year))
   const [chartData, setChartData] = useState({
-    labels: Data.map((data) => data.year), 
+    labels: Data.map((data) => data.day), 
     datasets: [
       {
         label: "mockData ",
-        data: Data.map((data) => data.userGain),
+        data: Data.map((data) => data.currency),
         backgroundColor: [
           "rgba(75,192,192,1)",
           "#ecf0f1",
@@ -29,7 +29,7 @@ const CurrencyChart = () => {
   })
 
   return (
-    <div>
+    <div className="mx-auto max-w-3xl flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-3xl md:p-8 mt-6">
       <LineChart chartData={chartData} />
     </div>
   );

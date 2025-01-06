@@ -1,32 +1,45 @@
 export const Data = [
     {
       id: 1,
-      year: 2016,
-      userGain: 80000,
-      userLost: 823
+      day: "1 Jan",
+      month: "Jan",
+      year: 2025,
+      currency: 1529.61
     },
     {
       id: 2,
-      year: 2017,
-      userGain: 45677,
-      userLost: 345
+      day: "2 Jan",
+      month: "Jan",
+      year: 2025,
+      currency: 1519.39
     },
     {
       id: 3,
-      year: 2018,
-      userGain: 78888,
-      userLost: 555
+      day: "3 Jan",
+      month: "Jan",
+      year: 2025,
+      currency: 1505.01
     },
     {
       id: 4,
-      year: 2019,
-      userGain: 90000,
-      userLost: 4555
+      day: "4 Jan",
+      month: "Jan",
+      year: 2025,
+      currency: 1512.05
     },
     {
       id: 5,
-      year: 2020,
-      userGain: 4300,
-      userLost: 234
-    }
+      day: "5 Jan",
+      month: "Jan",
+      year: 2025,
+      currency: 1513.20
+    },
+    {
+      id: 6,
+      day: "6 Jan",
+      month: "Jan",
+      year: 2025,
+      currency: 1520.19
+    },
+    
   ];

@@ -1,10 +1,10 @@
 import { Line } from "react-chartjs-2";
 
 const LineChart = ({ chartData }) => (
-  <div className="mx-auto max-w-3xl flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-3xl md:p-8 mt-6">
+  <div>
     <Line
         data={chartData}
-        height="200px"
+        height="120px"
         width="200px"
         options={{
           plugins: {
@@ -13,11 +13,16 @@ const LineChart = ({ chartData }) => (
               text: "mockData"
             },
             legend: {
+              labels: {
+                usePointStyle: true,
+              },
               display: false
             }
           },
+          animation: true,
           aspectRatio: 1,
-          maintainAspectRatio: false
+          maintainAspectRatio: false,
+          responsive: true
         }}
       />
   </div>
