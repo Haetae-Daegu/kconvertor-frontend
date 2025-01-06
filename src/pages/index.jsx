@@ -1,5 +1,5 @@
 import styles from '../styles/Main.module.css';
-import Convert from './convert';
+import Convert from './currency/convert';
 
 export default function Main() {
   return (
