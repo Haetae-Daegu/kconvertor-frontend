@@ -14,14 +14,14 @@ const LineChart = ({ chartData }) => (
             },
             legend: {
               labels: {
-                usePointStyle: true,
+                usePointStyle: false,
               },
               display: false
             }
           },
           animation: true,
-          aspectRatio: 1,
-          maintainAspectRatio: false,
+          aspectRatio: 2,
+          maintainAspectRatio: true,
           responsive: true
         }}
       />

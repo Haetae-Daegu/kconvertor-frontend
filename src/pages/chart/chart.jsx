@@ -1,32 +1,42 @@
 import Chart from "chart.js/auto";
 import LineChart from "../../components/LineChart";
+import { useGraphData } from "../../hooks/useGraphData";
+import ErrorPanel from "../../components/ErrorPanel";
 import { Data } from '../../utils/mockData';
 
 import { CategoryScale } from "chart.js"; 
-import { useState } from "react";
-import { Animation } from 'rsuite';
+import { useEffect, useState } from "react";
 
 Chart.register(CategoryScale)
 
 const CurrencyChart = () => {
-  const [isVisible, setIsVisible] = useState(true)
-  const [chartData, setChartData] = useState({
-    labels: Data.map((data) => data.day), 
-    datasets: [
-      {
-        data: Data.map((data) => data.currency),
-        backgroundColor: [
-          "rgba(75,192,192,1)",
-          "#ecf0f1",
-          "#50AF95",
-          "#f3ba2f",
-          "#2a71d0"
-        ],
-        borderColor: "black",
-        borderWidth: 2
-      }
-    ]
-  })
+  const { handleData, graphData, error} = useGraphData();
+
+  const [isVisible, setIsVisible] = useState(false)
+  const [chartData, setChartData] = useState(null)
+  useEffect(() => {
+    if (graphData.length > 0) {
+      console.log(graphData)
+      setChartData({
+        labels: graphData.map((data) => data.day), 
+        datasets: [
+          {
+            data: graphData.map((data) => data.currency_value),
+            backgroundColor: [
+              "rgba(75,192,192,1)",
+              "#ecf0f1",
+              "#50AF95",
+              "#f3ba2f",
+              "#2a71d0"
+            ],
+            fill: false,
+            borderColor: "black",
+            borderWidth: 2
+          }
+        ]
+      })
+    }
+  }, [graphData]);
 
   function visibility() {
     setIsVisible((isVisible) => !isVisible);
@@ -40,12 +50,19 @@ const CurrencyChart = () => {
         </h1>
         <button
           className="ml-auto rounded-lg bg-blue-500 p-2 hover:bg-gray-300 m6"
-          onClick={visibility}
+          onClick={() => {visibility(), handleData()}}
         >
           {isVisible ? "-" : "+"}
         </button>
       </div>
-        {isVisible && <LineChart chartData={chartData} />}
+        {isVisible && chartData ? (
+          <LineChart chartData={chartData} />
+          
+        ) : (
+          isVisible && <p>Loading ...</p>
+        )}
+        {error && <ErrorPanel message={error} />}
+
     </div>
   );
 }
