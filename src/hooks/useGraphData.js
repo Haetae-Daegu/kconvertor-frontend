@@ -11,7 +11,7 @@ export const useGraphData = () => {
   const handleData = async () => {
     try {
       const response = await axios.get(`${API_URL}/graph/`)
-      const data = response.data.slice(0, 20).map((item, i) => {
+      const data = response.data.map((item, i) => {
         const day = format(new Date(item.date.replace(/\//g, "-")), "dd MMM yyyy");
         item.id = i + 1
         return { ...item, day }
@@ -33,6 +33,7 @@ export const useGraphData = () => {
       }
     }
   }
+  
   return {
     graphData,
     handleData,

@@ -12,16 +12,40 @@ Chart.register(CategoryScale)
 const CurrencyChart = () => {
   const { handleData, graphData, error} = useGraphData();
 
-  const [isVisible, setIsVisible] = useState(false)
-  const [chartData, setChartData] = useState(null)
+  const [isVisible, setIsVisible] = useState(false);
+  const [chartData, setChartData] = useState(null);
+  const [timeFrame, setTimeFrame] = useState("1Y");
+
+  const timeFrameMap = {
+    "1M": (now) => new Date(now.setMonth(now.getMonth() - 1)),
+    "3M": (now) => new Date(now.setMonth(now.getMonth() - 3)),
+    "6M": (now) => new Date(now.setMonth(now.getMonth() - 6)),
+    "1Y": (now) => new Date(now.setMonth(now.getMonth() - 12)),
+    "Max": () => null,
+  };
+
+  const filterDataByTimeFrame = () => {
+    const now = new Date();
+    const limitDate = timeFrameMap[timeFrame](new Date(now));
+    console.log(limitDate)
+
+    if (limitDate == null)
+      return graphData;
+
+    return graphData.filter(item => {
+      const itemDate = new Date(item.date.replace(/\//g, "-"));
+      return itemDate >= limitDate;
+    })
+  }
+
   useEffect(() => {
     if (graphData.length > 0) {
-      console.log(graphData)
+      const filterData = filterDataByTimeFrame();
       setChartData({
-        labels: graphData.map((data) => data.day), 
+        labels: filterData.map((data) => data.day), 
         datasets: [
           {
-            data: graphData.map((data) => data.currency_value),
+            data: filterData.map((data) => data.currency_value),
             backgroundColor: [
               "rgba(75,192,192,1)",
               "#ecf0f1",
@@ -36,7 +60,7 @@ const CurrencyChart = () => {
         ]
       })
     }
-  }, [graphData]);
+  }, [graphData, timeFrame]);
 
   function visibility() {
     setIsVisible((isVisible) => !isVisible);
@@ -55,13 +79,30 @@ const CurrencyChart = () => {
           {isVisible ? "-" : "+"}
         </button>
       </div>
-        {isVisible && chartData ? (
-          <LineChart chartData={chartData} />
-          
-        ) : (
-          isVisible && <p>Loading ...</p>
-        )}
-        {error && <ErrorPanel message={error} />}
+
+      {isVisible && (
+        <div className="flex gap-4 mb-4">
+          {Object.keys(timeFrameMap).map((range) => (
+            <button
+              key={range}
+              className={`px-4 py-2 rounded-lg ${
+                timeFrame === range ? "bg-blue-500 text-white" : "bg-gray-200"
+              }`}
+              onClick={() => setTimeFrame(range)}
+            >
+              {range}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {isVisible && chartData ? (
+        <LineChart chartData={chartData} />
+        
+      ) : (
+        isVisible && <p>Loading ...</p>
+      )}
+      {error && <ErrorPanel message={error} />}
 
     </div>
   );

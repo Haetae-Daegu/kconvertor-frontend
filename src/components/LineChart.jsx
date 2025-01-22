@@ -20,7 +20,7 @@ const LineChart = ({ chartData }) => (
             }
           },
           animation: true,
-          aspectRatio: 2,
+          aspectRatio: 2.5,
           maintainAspectRatio: true,
           responsive: true
         }}
