@@ -21,6 +21,7 @@ const CurrencyChart = () => {
     "3M": (now) => new Date(now.setMonth(now.getMonth() - 3)),
     "6M": (now) => new Date(now.setMonth(now.getMonth() - 6)),
     "1Y": (now) => new Date(now.setMonth(now.getMonth() - 12)),
+    "5Y": (now) => new Date(now.setMonth(now.getMonth() - 60)),
     "Max": () => null,
   };
 
