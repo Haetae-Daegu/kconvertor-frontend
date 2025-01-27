@@ -4,7 +4,9 @@
   text-align: center;
   color: white;
   overflow: hidden;
-  background: linear-gradient(rgb(72,0,72,0.8), rgb(192,72,72,0.8)); 
+  overflow-y: auto;
+  background: linear-gradient(rgb(72,0,72,0.8), rgb(192,72,72,0.8));
+  
 }
 .titlePanel {
   top: 0;
