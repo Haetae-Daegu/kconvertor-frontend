@@ -12,9 +12,12 @@ export const useGraphData = () => {
     try {
       const response = await axios.get(`${API_URL}/graph/`)
       const data = response.data.map((item, i) => {
-        const day = format(new Date(item.date.replace(/\//g, "-")), "dd MMM yyyy");
-        item.id = i + 1
-        return { ...item, day }
+        const [day, month, year] = item.date.split("/");
+        const formattedDate = `${year}-${month}-${day}`;
+        const dayFormatted = format(new Date(formattedDate), "dd MMM yyyy");
+        
+        item.id = i + 1;
+        return { ...item, day: dayFormatted };
       });
       setError(null)
       setGraphData(data)
@@ -29,10 +32,12 @@ export const useGraphData = () => {
       } else if (err.request) {
         setError("Service unavailable. Please try again later.")
       } else {
+        console.log(err)
         setError("An unexpected error occurred. Please try again.");
       }
     }
   }
+  
   
   return {
     graphData,

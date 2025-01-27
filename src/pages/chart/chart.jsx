@@ -2,7 +2,6 @@ import Chart from "chart.js/auto";
 import LineChart from "../../components/LineChart";
 import { useGraphData } from "../../hooks/useGraphData";
 import ErrorPanel from "../../components/ErrorPanel";
-import { Data } from '../../utils/mockData';
 
 import { CategoryScale } from "chart.js"; 
 import { useEffect, useState } from "react";
@@ -14,34 +13,38 @@ const CurrencyChart = () => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [chartData, setChartData] = useState(null);
-  const [timeFrame, setTimeFrame] = useState("1Y");
+  const [timeFrame, setTimeFrame] = useState("1W");
 
   const timeFrameMap = {
+    "1W": (now) => new Date(now.setDate(now.getDate() - 7)),
     "1M": (now) => new Date(now.setMonth(now.getMonth() - 1)),
-    "3M": (now) => new Date(now.setMonth(now.getMonth() - 3)),
     "6M": (now) => new Date(now.setMonth(now.getMonth() - 6)),
     "1Y": (now) => new Date(now.setMonth(now.getMonth() - 12)),
-    "5Y": (now) => new Date(now.setMonth(now.getMonth() - 60)),
-    "Max": () => null,
   };
+
+  const parseDate = (dateString) => {
+    const [day, month, year] = dateString.split("/").map(Number);
+    return new Date(year, month - 1, day);
+  };
+  
 
   const filterDataByTimeFrame = () => {
     const now = new Date();
     const limitDate = timeFrameMap[timeFrame](new Date(now));
-    console.log(limitDate)
 
     if (limitDate == null)
       return graphData;
 
-    return graphData.filter(item => {
-      const itemDate = new Date(item.date.replace(/\//g, "-"));
+    return graphData.filter((item) => {
+      const itemDate = parseDate(item.date);
       return itemDate >= limitDate;
-    })
+    });
   }
 
   useEffect(() => {
     if (graphData.length > 0) {
       const filterData = filterDataByTimeFrame();
+      filterData.map((data) => data.currency_value)
       setChartData({
         labels: filterData.map((data) => data.day), 
         datasets: [
@@ -56,7 +59,7 @@ const CurrencyChart = () => {
             ],
             fill: false,
             borderColor: "black",
-            borderWidth: 2
+            borderWidth: 1
           }
         ]
       })
