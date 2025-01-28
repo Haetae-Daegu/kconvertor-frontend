@@ -20,7 +20,7 @@ const CurrencyChart = () => {
     "1W": (now) => new Date(now.setDate(now.getDate() - 7)),
     "1M": (now) => new Date(now.setMonth(now.getMonth() - 1)),
     "6M": (now) => new Date(now.setMonth(now.getMonth() - 6)),
-    "1Y": (now) => new Date(now.setMonth(now.getMonth() - 12)),
+    "1Y": (now) => new Date(now.setMonth(now.getMonth() - 13)),
   };
 
   const parseDate = (dateString) => {
@@ -93,9 +93,12 @@ const CurrencyChart = () => {
             ))}
           </div>
           {chartData ? (
-            <LineChart chartData={chartData} />
+            <>
+              <p className="text font-bold text-gray-600">Last updated: {graphData.at(-1).day}</p>
+              <LineChart chartData={chartData} />
+            </>
           ) : (
-            <p>Loading...</p>
+            <p className="text font-bold text-gray-600">Loading...</p>
           )}
         </>
       )}
