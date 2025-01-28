@@ -94,8 +94,8 @@ const CurrencyChart = () => {
           </div>
           {chartData ? (
             <>
-              <p className="text font-bold text-gray-600">Last updated: {graphData.at(-1).day}</p>
-              <LineChart chartData={chartData} />
+            <p className="text-xs font-bold text-gray-600 ml-auto">Last updated: {graphData?.at(-1).day}</p>
+            <LineChart chartData={chartData} />
             </>
           ) : (
             <p className="text font-bold text-gray-600">Loading...</p>
