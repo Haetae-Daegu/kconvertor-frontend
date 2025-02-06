@@ -5,6 +5,7 @@ import CurrencySelector from "../../components/CurrencySelector";
 import ResultDisplay from "../../components/ResultDisplay";
 import ErrorPanel from "../../components/ErrorPanel";
 import ToggleButton from "../../components/ToggleButton";
+import { FaCoins, FaChartLine } from "react-icons/fa";
 
 const Convert = () => {
   const {
@@ -29,6 +30,7 @@ const Convert = () => {
   return (
     <div className="mx-auto max-w-3xl flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-3xl md:p-8">
       <div className="flex items-center justify-between">
+        <FaCoins className="text-blue-700 text-3xl" />
         <h2 className="text-xl font-bold text-gray-800">
           Currency Convertor
         </h2>
@@ -70,16 +72,16 @@ const Convert = () => {
         </div>
       )}
 
-      {result !== null && error === null && (
+      {isVisible && (result !== null && error === null && (
         <ResultDisplay
           amount={amount}
           fromCurrency={fromCurrency}
           result={result}
           toCurrency={toCurrency}
         />
-      )}
+      ))}
 
-      {error && <ErrorPanel message={error} />}
+      {isVisible && (error && <ErrorPanel message={error} />)}
     </div>
   );
 };

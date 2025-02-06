@@ -12,7 +12,7 @@ const SocialLinks = () => {
   ];
 
   return (
-    <div className="fixed bottom-4 right-4 flex flex-col items-center">
+    <div className="fixed bottom-4 left-4 flex flex-col items-center">
       <button 
         onClick={() => setIsOpen(!isOpen)}
         className="bg-gray-800 text-white p-3 rounded-full shadow-lg hover:bg-gray-700 transition"

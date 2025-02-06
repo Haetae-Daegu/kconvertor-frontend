@@ -3,6 +3,7 @@ import LineChart from "../../components/LineChart";
 import { useGraphData } from "../../hooks/useGraphData";
 import ErrorPanel from "../../components/ErrorPanel";
 import ToggleButton from "../../components/ToggleButton";
+import { FaChartLine } from "react-icons/fa";
 
 import { CategoryScale } from "chart.js"; 
 import { useEffect, useState } from "react";
@@ -73,6 +74,7 @@ const CurrencyChart = () => {
   return (
     <div className="mx-auto max-w-3xl flex flex-col gap-6 rounded-3xl bg-white p-6 shadow-3xl md:p-8 mt-6">
       <div className="flex flex items-center justify-between">
+        <FaChartLine className="text-blue-700 text-3xl" />
         <h1 className="text-xl font-bold text-gray-800">Graph Currency</h1>
         <ToggleButton isVisible={isVisible} onToggle={toggleVisibility} />
       </div>
@@ -105,7 +107,7 @@ const CurrencyChart = () => {
           )}
         </>
       )}
-      {error && <ErrorPanel message={error} />}
+      {isVisible && (error && <ErrorPanel message={error} />)}
     </div>
   );
 };
