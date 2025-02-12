@@ -5,7 +5,7 @@ import CurrencySelector from "../../components/CurrencySelector";
 import ResultDisplay from "../../components/ResultDisplay";
 import ErrorPanel from "../../components/ErrorPanel";
 import ToggleButton from "../../components/ToggleButton";
-import { FaCoins, FaChartLine } from "react-icons/fa";
+import { FaCoins } from "react-icons/fa";
 
 const Convert = () => {
   const {

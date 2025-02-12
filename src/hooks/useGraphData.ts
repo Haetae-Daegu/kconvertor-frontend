@@ -4,14 +4,21 @@ import { format } from "date-fns";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
+interface GraphDataType {
+  currency_value: number;
+  date: string;
+  day: string;
+  id: number;
+}
 
-export const useGraphData = () => {
-  const [graphData, setGraphData] = useState([])
-  const [error, setError] = useState(null)
+export const useGraphData = (): {graphData: GraphDataType[], handleData:() => void, error: string | null }  => {
+  const [graphData, setGraphData] = useState<GraphDataType[]>([])
+  const [error, setError] = useState("")
+  
   const handleData = async () => {
     try {
       const response = await axios.get(`${API_URL}/graph/`)
-      const data = response.data.map((item, i) => {
+      const data = response.data.map((item: GraphDataType, i: number) => {
         const [day, month, year] = item.date.split("/");
         const formattedDate = `${year}-${month}-${day}`;
         const dayFormatted = format(new Date(formattedDate), "dd MMM yyyy");
@@ -19,9 +26,9 @@ export const useGraphData = () => {
         item.id = i + 1;
         return { ...item, day: dayFormatted };
       });
-      setError(null)
+      setError("")
       setGraphData(data)
-    } catch (err) {
+    } catch (err: any) {
       if (err.response) {
         const status = err.response.status
         if (status === 500) {

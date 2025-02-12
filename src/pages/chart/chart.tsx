@@ -8,35 +8,54 @@ import { FaChartLine } from "react-icons/fa";
 import { CategoryScale } from "chart.js"; 
 import { useEffect, useState } from "react";
 
+type TimeFrameString = "1W" | "1M" | "6M" | "1Y"
+
+interface GraphDataType {
+  currency_value: number;
+  date: string;
+  day: string;
+}
+
+interface ChartData {
+  labels: string[];
+  datasets: {
+    data: number[];
+    backgroundColor: string[];
+    fill: boolean;
+    borderColor: string;
+    borderWidth: number;
+  }[];
+}
+
 Chart.register(CategoryScale);
 
 const CurrencyChart = () => {
   const { handleData, graphData, error } = useGraphData();
 
   const [isVisible, setIsVisible] = useState(false);
-  const [chartData, setChartData] = useState(null);
-  const [timeFrame, setTimeFrame] = useState("1W");
+  const [chartData, setChartData] = useState<ChartData | null>(null);
+  const [timeFrame, setTimeFrame] = useState<TimeFrameString>("1W");
 
-  const timeFrameMap = {
-    "1W": (now) => new Date(now.setDate(now.getDate() - 7)),
-    "1M": (now) => new Date(now.setMonth(now.getMonth() - 1)),
-    "6M": (now) => new Date(now.setMonth(now.getMonth() - 6)),
-    "1Y": (now) => new Date(now.setMonth(now.getMonth() - 13)),
+  const timeFrameMap: Record<TimeFrameString, (now: Date) => Date> = {
+    "1W": (now: Date) => new Date(now.setDate(now.getDate() - 7)),
+    "1M": (now: Date) => new Date(now.setMonth(now.getMonth() - 1)),
+    "6M": (now: Date) => new Date(now.setMonth(now.getMonth() - 6)),
+    "1Y": (now: Date) => new Date(now.setMonth(now.getMonth() - 13)),
   };
 
-  const parseDate = (dateString) => {
+  const parseDate = (dateString: string) => {
     const [day, month, year] = dateString.split("/").map(Number);
     return new Date(year, month - 1, day);
   };
 
-  const filterDataByTimeFrame = () => {
+  const filterDataByTimeFrame = (): GraphDataType[] => {
     const now = new Date();
-    const limitDate = timeFrameMap[timeFrame](new Date(now));
+    const limitDate = timeFrameMap[timeFrame as keyof typeof timeFrameMap](new Date(now));
 
     if (limitDate == null)
       return graphData;
 
-    return graphData.filter((item) => {
+    return graphData.filter((item: GraphDataType) => {
       const itemDate = parseDate(item.date);
       return itemDate >= limitDate;
     });
@@ -76,7 +95,7 @@ const CurrencyChart = () => {
       <div className="flex flex items-center justify-between">
         <FaChartLine className="text-blue-700 text-3xl" />
         <h1 className="text-xl font-bold text-gray-800">Graph Currency</h1>
-        <ToggleButton isVisible={isVisible} onToggle={toggleVisibility} />
+        <ToggleButton isVisible={isVisible} onToggle={toggleVisibility} className={""} />
       </div>
 
       {isVisible && (
@@ -88,7 +107,7 @@ const CurrencyChart = () => {
                 className={`px-4 py-2 rounded-lg ${
                   timeFrame === range ? "bg-blue-500 text-white" : "bg-gray-200"
                 }`}
-                onClick={() => setTimeFrame(range)}
+                onClick={() => setTimeFrame(range as TimeFrameString)}
               >
                 {range}
               </button>
@@ -96,10 +115,11 @@ const CurrencyChart = () => {
           </div>
           {chartData ? (
             <>
-            <p className="text-xs font-bold text-gray-600 ml-auto">
-              
-              * 1 EUR = <span>{graphData?.at(-1).currency_value} Wons </span> {graphData?.at(-1).day}
-             </p>
+            {graphData.length > 0 && (
+              <p className="text-xs font-bold text-gray-600 ml-auto">
+                * 1 EUR = <span>{graphData.at(-1)!.currency_value} Wons</span> {graphData.at(-1)!.day}
+              </p>
+            )}
             <LineChart chartData={chartData} />
             </>
           ) : (

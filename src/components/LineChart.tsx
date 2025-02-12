@@ -1,6 +1,19 @@
 import { Line } from "react-chartjs-2";
 
-const LineChart = ({ chartData }) => (
+interface LineChartProps {
+  chartData: {
+    labels: string[];
+    datasets: {
+      data: number[];
+      backgroundColor: string[];
+      fill: boolean;
+      borderColor: string;
+      borderWidth: number;
+    }[];
+  };
+}
+
+const LineChart = ({chartData}: LineChartProps) => (
   <div>
     <Line
         data={chartData}
@@ -19,7 +32,7 @@ const LineChart = ({ chartData }) => (
               display: false
             }
           },
-          animation: true,
+          animation: false,
           aspectRatio: 2.5,
           maintainAspectRatio: true,
           responsive: true
