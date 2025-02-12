@@ -6,7 +6,7 @@ import ToggleButton from "../../components/ToggleButton";
 import { FaChartLine } from "react-icons/fa";
 
 import { CategoryScale } from "chart.js"; 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type TimeFrameString = "1W" | "1M" | "6M" | "1Y"
 
@@ -29,6 +29,13 @@ interface ChartData {
 
 Chart.register(CategoryScale);
 
+const timeFrameMap: Record<TimeFrameString, (now: Date) => Date> = {
+  "1W": (now: Date) => new Date(now.setDate(now.getDate() - 7)),
+  "1M": (now: Date) => new Date(now.setMonth(now.getMonth() - 1)),
+  "6M": (now: Date) => new Date(now.setMonth(now.getMonth() - 6)),
+  "1Y": (now: Date) => new Date(now.setMonth(now.getMonth() - 13)),
+};
+
 const CurrencyChart = () => {
   const { handleData, graphData, error } = useGraphData();
 
@@ -36,32 +43,29 @@ const CurrencyChart = () => {
   const [chartData, setChartData] = useState<ChartData | null>(null);
   const [timeFrame, setTimeFrame] = useState<TimeFrameString>("1W");
 
-  const timeFrameMap: Record<TimeFrameString, (now: Date) => Date> = {
-    "1W": (now: Date) => new Date(now.setDate(now.getDate() - 7)),
-    "1M": (now: Date) => new Date(now.setMonth(now.getMonth() - 1)),
-    "6M": (now: Date) => new Date(now.setMonth(now.getMonth() - 6)),
-    "1Y": (now: Date) => new Date(now.setMonth(now.getMonth() - 13)),
-  };
+  const timeFrameMapMemo = useMemo(() => timeFrameMap, []);
 
   const parseDate = (dateString: string) => {
     const [day, month, year] = dateString.split("/").map(Number);
     return new Date(year, month - 1, day);
   };
 
-  const filterDataByTimeFrame = (): GraphDataType[] => {
-    const now = new Date();
-    const limitDate = timeFrameMap[timeFrame as keyof typeof timeFrameMap](new Date(now));
 
-    if (limitDate == null)
-      return graphData;
-
-    return graphData.filter((item: GraphDataType) => {
-      const itemDate = parseDate(item.date);
-      return itemDate >= limitDate;
-    });
-  };
 
   useEffect(() => {
+    const filterDataByTimeFrame = (): GraphDataType[] => {
+      const now = new Date();
+      const limitDate = timeFrameMapMemo[timeFrame as keyof typeof timeFrameMapMemo](new Date(now));
+  
+      if (limitDate == null)
+        return graphData;
+  
+      return graphData.filter((item: GraphDataType) => {
+        const itemDate = parseDate(item.date);
+        return itemDate >= limitDate;
+      });
+    };
+
     if (graphData.length > 0) {
       const filterData = filterDataByTimeFrame();
       setChartData({
@@ -83,7 +87,7 @@ const CurrencyChart = () => {
         ],
       });
     }
-  }, [graphData, timeFrame]);
+  }, [graphData, timeFrame, timeFrameMapMemo]);
 
   const toggleVisibility = () => {
     setIsVisible((prev) => !prev);

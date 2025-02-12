@@ -34,14 +34,14 @@ const Convert = () => {
         <h2 className="text-xl font-bold text-gray-800">
           Currency Convertor
         </h2>
-        <ToggleButton isVisible={isVisible} onToggle={toggleVisibility} />
+        <ToggleButton isVisible={isVisible} onToggle={toggleVisibility} className={""} />
       </div>
 
       {isVisible && (
         <div className="flex flex-col gap-4">
           <InputField
             value={amount}
-            onChange={(e) => setAmount(e.target.value)}
+            onChange={(e) => setAmount(Number(e.target.value))}
             placeholder="Enter amount"
           />
 

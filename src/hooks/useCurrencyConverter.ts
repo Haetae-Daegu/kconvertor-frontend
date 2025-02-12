@@ -1,5 +1,5 @@
 import { useState } from "react"
-import axios from 'axios';
+import axios from "axios";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -26,17 +26,21 @@ export const useCurrencyConvertor = () => {
 
       setError(null);
       setResult(response.data[toCurrency]);
-    } catch (err: any) {
+    } catch (err: unknown) {
       setResult(null)
-      if (err.response) {
-        const status = err.response.status
-        if (status === 500) {
-          setError("Internal server error: Please try again later.");
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          const status = err.response.status;
+          if (status === 500) {
+            setError("Internal server error: Please try again later.");
+          } else {
+            setError(`Error ${status}: ${err.response.data?.message || "Unknown error"}`);
+          }
+        } else if (err.request) {
+          setError("Service unavailable. Please try again later.");
         } else {
-          setError(`Error ${err.response.status}: ${err.response.message}`);
+          setError("An unexpected error occurred. Please try again.");
         }
-      } else if (err.request) {
-        setError("Service unavailable. Please try again later.") 
       } else {
         setError("An unexpected error occurred. Please try again.");
       }

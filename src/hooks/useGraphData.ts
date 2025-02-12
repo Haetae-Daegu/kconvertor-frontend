@@ -28,23 +28,24 @@ export const useGraphData = (): {graphData: GraphDataType[], handleData:() => vo
       });
       setError("")
       setGraphData(data)
-    } catch (err: any) {
-      if (err.response) {
-        const status = err.response.status
-        if (status === 500) {
-          setError("Internal server error: Please try again later.");
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          const status = err.response.status
+          if (status === 500) {
+            setError("Internal server error: Please try again later.");
+          } else {
+            setError(`Error ${err.response.status}: ${err.response.data.message}`);
+          }
+        } else if (err.request) {
+          setError("Service unavailable. Please try again later.")
         } else {
-          setError(`Error ${err.response.status}: ${err.response.message}`);
+          console.log(err)
+          setError("An unexpected error occurred. Please try again.");
         }
-      } else if (err.request) {
-        setError("Service unavailable. Please try again later.")
-      } else {
-        console.log(err)
-        setError("An unexpected error occurred. Please try again.");
       }
     }
   }
-  
   
   return {
     graphData,

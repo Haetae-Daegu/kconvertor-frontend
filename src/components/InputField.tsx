@@ -2,7 +2,7 @@ import React, {ChangeEventHandler} from "react";
 
 
 interface Props {
-  value: string;
+  value: number | undefined;
   onChange: ChangeEventHandler<HTMLInputElement>;
   placeholder: string
 }

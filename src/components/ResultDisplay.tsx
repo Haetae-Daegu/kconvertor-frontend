@@ -1,5 +1,5 @@
 interface Props {
-  amount: string;
+  amount: number | undefined;
   fromCurrency: string;
   result: string;
   toCurrency: string
