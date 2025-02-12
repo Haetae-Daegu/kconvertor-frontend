@@ -4,11 +4,11 @@ import axios from 'axios';
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 export const useCurrencyConvertor = () => {
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState<number>();
   const [fromCurrency, setFromCurrency] = useState("EUR");
   const [toCurrency, setToCurrency] = useState("KRW");
   const [result, setResult] = useState(null);
-  const [error, setError] = useState(null)
+  const [error, setError] = useState<string | null>("")
 
   const handleConvert = async() => {
     if (!amount || isNaN(amount)) {
@@ -26,7 +26,7 @@ export const useCurrencyConvertor = () => {
 
       setError(null);
       setResult(response.data[toCurrency]);
-    } catch (err) {
+    } catch (err: any) {
       setResult(null)
       if (err.response) {
         const status = err.response.status
