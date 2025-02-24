@@ -1,12 +1,12 @@
 import Chart from "chart.js/auto";
-import LineChart from "../../components/LineChart";
-import { useGraphData } from "../../hooks/useGraphData";
-import ErrorPanel from "../../components/ErrorPanel";
-import ToggleButton from "../../components/ToggleButton";
 import { FaChartLine } from "react-icons/fa";
 
 import { CategoryScale } from "chart.js"; 
 import { useEffect, useMemo, useState } from "react";
+import { useGraphData } from "@/hooks/useGraphData";
+import ToggleButton from "@/components/ToggleButton";
+import LineChart from "@/components/LineChart";
+import ErrorPanel from "@/components/ErrorPanel";
 
 type TimeFrameString = "1W" | "1M" | "6M" | "1Y"
 

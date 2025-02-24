@@ -1,8 +1,9 @@
+import SocialLinks from '@/components/SocialLinks';
 import styles from '../styles/Main.module.css';
+
+import Link from 'next/link'
 import Convert from './currency/convert';
 import CurrencyChart from './chart/chart';
-import SocialLinks from "../components/SocialLinks";
-import Link from 'next/link'
 
 
 export default function Main() {

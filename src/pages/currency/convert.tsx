@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useCurrencyConvertor } from "../../hooks/useCurrencyConverter";
-import InputField from "../../components/InputField";
-import CurrencySelector from "../../components/CurrencySelector";
-import ResultDisplay from "../../components/ResultDisplay";
-import ErrorPanel from "../../components/ErrorPanel";
-import ToggleButton from "../../components/ToggleButton";
+import { useCurrencyConvertor } from "@/hooks/useCurrencyConverter";
+import InputField from "@/components/InputField";
+import CurrencySelector from "@/components/CurrencySelector";
+import ResultDisplay from "@/components/ResultDisplay";
+import ErrorPanel from "@/components/ErrorPanel";
 import { FaCoins } from "react-icons/fa";
+import ToggleButton from "@/components/ToggleButton";
 
 const Convert = () => {
   const {

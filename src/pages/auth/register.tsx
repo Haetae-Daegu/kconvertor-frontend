@@ -7,9 +7,10 @@ import { FormEvent, useState } from "react";
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
 
-const Login = () => {
+const Register = () => {
   const router = useRouter()
   const [email, setEmail] = useState<string>("");
+  const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("");
   const [error, setError] = useState<string | null>("")
 
@@ -18,9 +19,8 @@ const Login = () => {
     e.preventDefault();
     try {
       setError(null)
-      const response = await axios.post(`${API_URL}/auth/login`, {email, password});
-      localStorage.setItem('token', response.data.access_token)
-      router.push("/")
+      const response = await axios.post(`${API_URL}/auth/register`, {username, email, password});
+      router.push("login")
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
@@ -28,12 +28,15 @@ const Login = () => {
           if (status === 500) {
             setError("Internal server error: Please try again later.");
           } else {
-            setError("We can't seem to find that email and password combination, try another?");
+            setError(`Error ${err.response.status}: ${err.response.data.message}`);
           }
         } else if (err.request) {
           setError("Service unavailable. Please try again later.")
+        } else {
+          setError("This account already exist");
         }
       }
+
     }
   }
 
@@ -44,8 +47,18 @@ const Login = () => {
       <div className="relative w-96">
         <div className="absolute top-2 left-2 w-full h-full bg-yellow-400 rounded-lg border border-black"></div>
         <div className="relative p-6 bg-white shadow-lg rounded-lg border border-black">
-          <h2 className="text-xl font-bold text-center mb-2">Log in KConvertor</h2>
+          <h2 className="text-xl font-bold text-center mb-2">Register in KConvertor</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+              <label className="block text-gray-700">Username</label>
+              <input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                placeholder="Username"
+                required
+              />
+            </div>
             <div>
               <label className="block text-gray-700">Email</label>
               <input
@@ -68,34 +81,23 @@ const Login = () => {
                 required
               />
             </div>
+            <p>Or
+              <Link href="/auth/login">
+                <span className="underline hover:underline"> use an existing account</span>
+              </Link>
+            </p>
             {error && <ErrorPanel message={error}/>}
             <button
               type="submit"
               className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"
             >
-              Log In
+              Submit
             </button>
           </form>
-
-          <div className="mt-4">
-            <Link href="/">
-              <button
-                className="w-full bg-yellow-500 border border-black text-white py-2 rounded-md hover:bg-gray-800 transition"
-              >
-                Visitor
-              </button>
-            </Link>
-          </div>
-
-          <p>No account ?
-            <Link href="/auth/register">
-              <span className="underline hover:underline"> Register</span>
-            </Link>
-          </p>
         </div>
       </div>
     </div>
   );
 }
 
-export default Login;
+export default Register;
