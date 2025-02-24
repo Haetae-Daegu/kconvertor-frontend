@@ -1,13 +1,45 @@
-import { useState } from "react";
+import axios from "axios";
+import Link from "next/link";
+import { useRouter } from 'next/navigation'
+import { FormEvent, useState } from "react";
 
-export default function Login() {
+const API_URL = process.env.NEXT_PUBLIC_API_URL
+
+
+const Login = () => {
+  const router = useRouter()
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
+  const [error, setError] = useState<string | null>("")
 
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log({ email, password});
-  };
+    try {
+      setError(null)
+      const response = await axios.post(`${API_URL}/auth/login`, {email, password});
+      localStorage.setItem('token', response.data.access_token)
+      router.push("/")
+    } catch (err) {
+      if (axios.isAxiosError(err)) {
+        if (err.response) {
+          const status = err.response.status
+          if (status === 500) {
+            setError("Internal server error: Please try again later.");
+          } else {
+            setError(`Error ${err.response.status}: ${err.response.data.message}`);
+          }
+        } else if (err.request) {
+          setError("Service unavailable. Please try again later.")
+        } else {
+          setError("Invalid credentials");
+        }
+      }
+
+    }
+
+
+  }
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -40,18 +72,30 @@ export default function Login() {
                 required
               />
             </div>
-            
+            {error && <p className="text-red-600 py-2">We can't seem to find that email and password combination, try another?</p>}
             <button
               type="submit"
               className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"
             >
               Log In
             </button>
-
-            <p>Don't have an account ? <span className="underline hover:underline">Register</span></p>
           </form>
+
+          <div className="mt-4">
+            <Link href="/">
+              <button
+                className="w-full bg-yellow-500 border border-black text-white py-2 rounded-md hover:bg-gray-800 transition"
+              >
+                Visitor
+              </button>
+            </Link>
+          </div>
+
+          <p>No account ? <span className="underline hover:underline">Register</span></p>
         </div>
       </div>
     </div>
   );
 }
+
+export default Login;
