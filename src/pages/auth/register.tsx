@@ -29,12 +29,10 @@ const Register = () => {
           if (status === 500) {
             setError("Internal server error: Please try again later.");
           } else {
-            setError(`Error ${err.response.status}: ${err.response.data.message}`);
+            setError("This account already exist");
           }
         } else if (err.request) {
           setError("Service unavailable. Please try again later.")
-        } else {
-          setError("This account already exist");
         }
       }
 
