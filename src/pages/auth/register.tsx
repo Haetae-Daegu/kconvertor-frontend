@@ -20,7 +20,8 @@ const Register = () => {
     try {
       setError(null)
       const response = await axios.post(`${API_URL}/auth/register`, {username, email, password});
-      router.push("login")
+      if (response.data)
+        router.push("login")
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
