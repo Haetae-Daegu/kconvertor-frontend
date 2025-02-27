@@ -21,14 +21,6 @@ export default function Main() {
         <div className="absolute inset-0 bg-black bg-opacity-30" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">Korean Convertor</h1>
-          <p className="mt-2 text-base sm:text-lg">Convertissez facilement vos devises</p>
-          <div className="mt-4 w-72 sm:w-80 md:w-96">
-            <input
-              type="text"
-              placeholder="Rechercher..."
-              className="w-full px-4 py-2 rounded-lg text-black border border-gray-300"
-            />
-          </div>
         </div>
       </div>
       
