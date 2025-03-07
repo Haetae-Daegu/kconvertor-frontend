@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react'
-import axios from 'axios';
+import { accommodationService } from '@/services/accommodationService'
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -19,24 +19,49 @@ interface Accommodation {
     longitude: number;
 }
 
-  export const useAccommodation = (): {accommodations: Accommodation[], handleData:() => void, error: string | null, isLoading: boolean }  => {
-    const [accommodations, setAccommodation] = useState<Accommodation[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
+interface AccommodationCreate {
+  title: string;
+  description: string;
+  price_per_month: number;
+  security_deposit?: number;
+  location: string;
+  bedrooms: number;
+  bathrooms: number;
+  max_guests: number;
+  minimum_stay?: number;
+  amenities?: string[];
+  house_rules?: string;
+  latitude?: number;
+  longitude?: number;
+}
 
-    const handleData = useCallback(async () => {
-      try {
-        setIsLoading(true);
-        setError(null);
-        const response = await axios.get(`${API_URL}/accommodations`);
-        setAccommodation(response.data);
-      } catch (err) {
-        console.log(err)
-        setError('Error fetching accommodations');
-      } finally {
-        setIsLoading(false);
-      }
-    }, []);
+export const useAccommodation = () => {
+  const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-    return { accommodations, handleData, error, isLoading };
-  }
+  const handleData = useCallback(async () => {
+    try {
+      setIsLoading(true);
+      setError(null);
+      const data = await accommodationService.getAll();
+      setAccommodations(data);
+    } catch (err) {
+      setError(err as string);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  const createAccommodation = async (data: AccommodationCreate) => {
+    try {
+      const newAccommodation = await accommodationService.create(data);
+      setAccommodations(prev => [...prev, newAccommodation]);
+      return newAccommodation;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return { accommodations, handleData, createAccommodation, error, isLoading };
+}
