@@ -1,8 +1,6 @@
 import { useState, useCallback } from 'react'
 import { accommodationService } from '@/services/accommodationService'
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL
-
 interface Accommodation {
     id?: number;
     title: string;
