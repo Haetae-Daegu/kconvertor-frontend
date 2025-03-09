@@ -40,31 +40,48 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
   });
 
   const [amenities, setAmenities] = useState<string[]>([]);
+  const [images, setImages] = useState<File[]>([]);
+  const maxImages = 6;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const loadingToast = toast.loading('Creating accommodation...');
     
     try {
+      const formDataToSend = new FormData();
+      
+      images.map((image) => {
+        console.log('Adding image:', image.name, image.type);
+        formDataToSend.append('images[]', image, image.name);
+      });
+
       const accommodationData = {
-        ...formData,
+        title: formData.title,
+        description: formData.description,
         price_per_month: Number(formData.price_per_month),
         security_deposit: Number(formData.security_deposit) || 0,
+        location: formData.location,
         bedrooms: Number(formData.bedrooms),
-        bathrooms: Number(formData.bathrooms),
+        bathrooms: Number(formData.bathrooms), 
         max_guests: Number(formData.max_guests),
         minimum_stay: Number(formData.minimum_stay),
-        latitude: formData.latitude ? Number(formData.latitude) : undefined,
-        longitude: formData.longitude ? Number(formData.longitude) : undefined,
-        amenities,
+        house_rules: formData.house_rules,
+        latitude: Number(formData.latitude),
+        longitude: Number(formData.longitude),
+        amenities: amenities
       };
 
-      await createAccommodation(accommodationData);
-      
+      formDataToSend.append('data', JSON.stringify(accommodationData));
+
+      console.log('FormData content:');
+      Array.from(formDataToSend.entries()).map(([key, value]) => 
+        console.log(key, value)
+      );
+
+      await createAccommodation(formDataToSend);
       toast.success('Accommodation created successfully!', {
         id: loadingToast,
       });
-      
       setFormData({
         title: '',
         description: '',
@@ -80,6 +97,7 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
         longitude: '',
       });
       setAmenities([]);
+      setImages([]);
       onClose();
 
       setTimeout(() => {
@@ -97,6 +115,19 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
   const fillDemoData = () => {
     setFormData(demoData);
     setAmenities(["TV", "Washing Machine", "Internet", "Air Conditioning"]);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    if (images.length + files.length > maxImages) {
+      toast.error(`Maximum ${maxImages} images allowed`);
+      return;
+    }
+    setImages(prev => [...prev, ...files]);
+  };
+
+  const removeImage = (index: number) => {
+    setImages(prev => prev.filter((_, i) => i !== index));
   };
 
   if (!isOpen) return null;
@@ -258,6 +289,51 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
                     <span className="text-sm text-gray-700">{amenity}</span>
                   </label>
                 ))}
+              </div>
+            </div>
+
+            <div className="col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Images (Maximum {maxImages})
+              </label>
+              <div className="mt-1 flex flex-col gap-4">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleImageChange}
+                  className="hidden"
+                  id="images"
+                  disabled={images.length >= maxImages}
+                />
+                <label
+                  htmlFor="images"
+                  className={`cursor-pointer flex items-center justify-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 
+                    ${images.length >= maxImages ? 'opacity-50 cursor-not-allowed' : ''}`}
+                >
+                  Add Images
+                </label>
+                
+                <div className="grid grid-cols-3 gap-4">
+                  {images.map((image, index) => (
+                    <div key={index} className="relative">
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt={`Preview ${index + 1}`}
+                        className="w-full h-32 object-cover rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
 

@@ -28,12 +28,18 @@ interface AccommodationCreate {
 
 export const accommodationService = {
   async getAll() {
-    const response = await axiosInstance.get('/accommodations');
+    const response = await axiosInstance.get('/accommodations/');
     return response.data;
   },
 
-  async create(data: AccommodationCreate) {
-    const response = await axiosInstance.post('/accommodations/', data);
+  async create(data: FormData | AccommodationCreate) {
+    const response = await axiosInstance.post('/accommodations/', data, {
+      headers: data instanceof FormData ? {
+        'Content-Type': 'multipart/form-data',
+      } : {
+        'Content-Type': 'application/json',
+      },
+    });
     return response.data;
   }
 }; 

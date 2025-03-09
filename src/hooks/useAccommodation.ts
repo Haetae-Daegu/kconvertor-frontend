@@ -33,6 +33,8 @@ interface AccommodationCreate {
   longitude?: number;
 }
 
+type CreateAccommodationData = FormData | AccommodationCreate;
+
 export const useAccommodation = () => {
   const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -51,7 +53,7 @@ export const useAccommodation = () => {
     }
   }, []);
 
-  const createAccommodation = async (data: AccommodationCreate) => {
+  const createAccommodation = async (data: CreateAccommodationData) => {
     try {
       const newAccommodation = await accommodationService.create(data);
       setAccommodations(prev => [...prev, newAccommodation]);
