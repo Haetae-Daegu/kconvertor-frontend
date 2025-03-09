@@ -2,11 +2,12 @@ import axios from 'axios';
 import { API_URL } from '@/config/api';
 
 const axiosInstance = axios.create({
-  baseURL: `${API_URL}/`,
+  baseURL: API_URL,
   headers: {
     'accept': 'application/json',
     'Content-Type': 'application/json'
-  }
+  },
+  maxRedirects: 0
 });
 
 interface AccommodationCreate {
@@ -32,7 +33,7 @@ export const accommodationService = {
   },
 
   async create(data: AccommodationCreate) {
-    const response = await axiosInstance.post('/accommodations', data);
+    const response = await axiosInstance.post('/accommodations/', data);
     return response.data;
   }
 }; 

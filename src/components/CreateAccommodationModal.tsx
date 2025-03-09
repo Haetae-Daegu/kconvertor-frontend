@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAccommodation } from '@/hooks/useAccommodation';
+import { toast } from 'react-hot-toast';
 
 const AMENITIES = [
   "TV", "Washing Machine", "Refrigerator", "Air Conditioning", "Microwave",
@@ -42,6 +43,8 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const loadingToast = toast.loading('Creating accommodation...');
+    
     try {
       const accommodationData = {
         ...formData,
@@ -57,6 +60,11 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
       };
 
       await createAccommodation(accommodationData);
+      
+      toast.success('Accommodation created successfully!', {
+        id: loadingToast,
+      });
+      
       setFormData({
         title: '',
         description: '',
@@ -73,9 +81,16 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
       });
       setAmenities([]);
       onClose();
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+
     } catch (error) {
+      toast.error('Failed to create accommodation', {
+        id: loadingToast,
+      });
       console.error('Failed to create accommodation:', error);
-      alert('Failed to create accommodation. Please try again.');
     }
   };
 
@@ -236,7 +251,7 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
                         if (e.target.checked) {
                           setAmenities([...amenities, amenity]);
                         } else {
-                          setAmenities(amenities.filter(a => a !== amenity));
+                          setAmenities(amenities.filter(a => a != amenity));
                         }
                       }}
                     />
