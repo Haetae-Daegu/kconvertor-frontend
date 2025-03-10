@@ -1,11 +1,11 @@
 import React from "react";
 import Image from 'next/image';
-import image from 'public/appart3.png'
 import { useAccommodation } from "@/hooks/useAccommodation";
 import { useEffect } from "react";
 
 const AccommodationList = () => {
   const { accommodations, handleData, error, isLoading } = useAccommodation();
+  console.log(accommodations);
   
   useEffect(() => {
     handleData();
@@ -41,7 +41,7 @@ const AccommodationList = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center h-[400px] md:h-[600px]">
-        <p className="text-red-500">Une erreur est survenue lors du chargement des données.</p>
+        <p className="text-red-500">There was an error loading the data.</p>
       </div>
     );
   }
@@ -52,7 +52,8 @@ const AccommodationList = () => {
         <div key={accommodation.id} className="bg-white rounded-lg shadow-sm">
           <div className="relative h-40">
             <Image
-              src={image}
+              fill={true}
+              src={accommodation?.image_urls?.[0] || ''}
               alt={accommodation.title}
               className="w-full h-40 object-cover rounded-t-lg"
             />

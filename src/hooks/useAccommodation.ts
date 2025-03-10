@@ -15,6 +15,7 @@ interface Accommodation {
     house_rules: string;
     latitude: number;
     longitude: number;
+    image_urls: string[];
 }
 
 interface AccommodationCreate {
