@@ -2,15 +2,18 @@ import React from "react";
 import Image from 'next/image';
 import { useAccommodation } from "@/hooks/useAccommodation";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 const AccommodationList = () => {
   const { accommodations, handleData, error, isLoading } = useAccommodation();
+  const router = useRouter();
   console.log(accommodations);
   
   useEffect(() => {
     handleData();
   }, [handleData]);
 
+  // For loading animation
   if (isLoading) {
     return (
       <div className="grid grid-cols-1 gap-4 w-full mx-auto h-[400px] md:h-[600px] overflow-y-auto p-2">
@@ -49,7 +52,11 @@ const AccommodationList = () => {
   return (
     <div className="grid grid-cols-1 gap-4 w-full mx-auto h-[400px] md:h-[600px] overflow-y-auto p-2">
       {accommodations.map((accommodation) => (
-        <div key={accommodation.id} className="bg-white rounded-lg shadow-sm">
+        <div 
+          key={accommodation.id} 
+          className="bg-white rounded-lg shadow-sm transition-transform transform hover:scale-105 cursor-pointer" 
+          onClick={() => router.push(`/accommodation/${accommodation.id}`)}
+        >
           <div className="relative h-40">
             <Image
               fill={true}

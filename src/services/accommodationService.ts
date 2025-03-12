@@ -41,5 +41,10 @@ export const accommodationService = {
       },
     });
     return response.data;
+  },
+
+  async getById(id: number) {
+    const response = await axiosInstance.get(`/accommodations/${id}`);
+    return response.data;
   }
 }; 

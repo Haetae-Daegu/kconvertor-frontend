@@ -38,6 +38,7 @@ type CreateAccommodationData = FormData | AccommodationCreate;
 
 export const useAccommodation = () => {
   const [accommodations, setAccommodations] = useState<Accommodation[]>([]);
+  const [accommodation, setAccommodation] = useState<Accommodation | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -64,5 +65,22 @@ export const useAccommodation = () => {
     }
   };
 
-  return { accommodations, handleData, createAccommodation, error, isLoading };
+  const getAccommodationById = useCallback(async (id: number) => {
+    try {
+      const data = await accommodationService.getById(id);
+      setAccommodation(data);
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
+  return { 
+    accommodations,
+    accommodation,
+    error, 
+    isLoading, 
+    handleData, 
+    createAccommodation, 
+    getAccommodationById 
+  };
 }
