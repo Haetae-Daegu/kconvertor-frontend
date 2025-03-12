@@ -46,5 +46,10 @@ export const accommodationService = {
   async getById(id: number) {
     const response = await axiosInstance.get(`/accommodations/${id}`);
     return response.data;
+  },
+
+  async delete(id: number) {
+    const response = await axiosInstance.delete(`/accommodations/${id}`);
+    return response;
   }
 }; 

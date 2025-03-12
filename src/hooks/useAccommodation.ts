@@ -74,6 +74,18 @@ export const useAccommodation = () => {
     }
   }, []);
 
+  const deleteAccommodation = async (id: number) => {
+    try {
+      const response = await accommodationService.delete(id);
+      setAccommodations(prev => prev.filter(accommodation => accommodation.id !== id));
+      if (response.status !== 200)
+        throw new Error('Failed to delete accommodation');
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return { 
     accommodations,
     accommodation,
@@ -81,6 +93,7 @@ export const useAccommodation = () => {
     isLoading, 
     handleData, 
     createAccommodation, 
-    getAccommodationById 
+    getAccommodationById, 
+    deleteAccommodation
   };
 }

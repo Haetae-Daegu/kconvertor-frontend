@@ -7,7 +7,6 @@ import { useRouter } from "next/router";
 const AccommodationList = () => {
   const { accommodations, handleData, error, isLoading } = useAccommodation();
   const router = useRouter();
-  console.log(accommodations);
   
   useEffect(() => {
     handleData();

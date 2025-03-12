@@ -73,12 +73,8 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
       formDataToSend.append('data', JSON.stringify(accommodationData));
 
-      console.log('FormData content:');
-      Array.from(formDataToSend.entries()).map(([key, value]) => 
-        console.log(key, value)
-      );
-
       await createAccommodation(formDataToSend);
+      
       toast.success('Accommodation created successfully!', {
         id: loadingToast,
       });
