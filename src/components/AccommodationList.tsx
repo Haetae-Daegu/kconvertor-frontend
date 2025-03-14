@@ -1,16 +1,17 @@
 import React from "react";
 import Image from 'next/image';
-import { useAccommodation } from "@/hooks/useAccommodation";
-import { useEffect } from "react";
 import { useRouter } from "next/router";
+import { Accommodation } from '@/types/accommodation';
+import { FaGhost } from "react-icons/fa";
 
-const AccommodationList = () => {
-  const { accommodations, handleData, error, isLoading } = useAccommodation();
+interface AccommodationListProps {
+  accommodations: Accommodation[];
+  error: string | null;
+  isLoading: boolean;
+}
+
+const AccommodationList: React.FC<AccommodationListProps> = ({ accommodations, error, isLoading }) => {
   const router = useRouter();
-  
-  useEffect(() => {
-    handleData();
-  }, [handleData]);
 
   // For loading animation
   if (isLoading) {
@@ -48,6 +49,15 @@ const AccommodationList = () => {
     );
   }
 
+  if (!accommodations.length) {
+    return (
+      <div className="flex flex-col items-center justify-center h-[400px] md:h-[600px]">
+        <FaGhost className="w-16 h-16 mb-2 animate-bounce" />
+        <p className="text-gray-600">No accommodation available.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 gap-4 w-full mx-auto h-[400px] md:h-[600px] overflow-y-auto p-2">
       {accommodations.map((accommodation) => (
@@ -59,6 +69,7 @@ const AccommodationList = () => {
           <div className="relative h-40">
             <Image
               fill={true}
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
               src={accommodation?.image_urls?.[0] || ''}
               alt={accommodation.title}
               className="w-full h-40 object-cover rounded-t-lg"
