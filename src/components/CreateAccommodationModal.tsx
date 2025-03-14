@@ -42,9 +42,16 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
   const [amenities, setAmenities] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
   const maxImages = 6;
+  const minImages = 2;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (images.length < minImages || images.length > maxImages) {
+      toast.error(`Please upload between ${minImages} and ${maxImages} images.`);
+      return;
+    }
+
     const loadingToast = toast.loading('Creating accommodation...');
     
     try {
@@ -115,11 +122,11 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    if (images.length + files.length > maxImages) {
+    if (files.length + images.length > maxImages) {
       toast.error(`Maximum ${maxImages} images allowed`);
       return;
     }
-    setImages(prev => [...prev, ...files]);
+    setImages(prevImages => [...prevImages, ...files]);
   };
 
   const removeImage = (index: number) => {
@@ -129,11 +136,10 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[1000] overflow-y-auto">
-      <div className="fixed inset-0 bg-black bg-opacity-50 transition-opacity" onClick={onClose}></div>
-      
+    <div className={`fixed inset-0 z-50 overflow-y-auto ${isOpen ? 'block' : 'hidden'}`}>
+      <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose}></div>
       <div className="relative min-h-screen flex items-center justify-center p-4">
-        <div className="relative bg-white rounded-lg w-full max-w-2xl p-6 transform transition-all">
+        <div className="bg-white rounded-lg w-full max-w-2xl p-6">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-semibold">Create New Listing</h2>
             {process.env.NODE_ENV === 'development' && (
@@ -290,7 +296,7 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
             <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Images (Maximum {maxImages})
+                Images (Minimum {minImages}, Maximum {maxImages})
               </label>
               <div className="mt-1 flex flex-col gap-4">
                 <input

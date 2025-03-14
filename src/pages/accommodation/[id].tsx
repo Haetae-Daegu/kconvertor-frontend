@@ -1,16 +1,17 @@
 import { useRouter } from "next/router";
-import Image from "next/image";
 import { useAccommodation } from "@/hooks/useAccommodation";
 import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
 import ImageSlider from "@/components/ImageSlider";
 import OptionsMenu from "@/components/OptionsMenu";
+import EditAccommodationModal from "@/components/EditAccommodationModal";
 
 const AccommodationDetails = () => {
   const [showOptions, setShowOptions] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { accommodation, getAccommodationById, deleteAccommodation } = useAccommodation();
+  const [isEditModalOpen, setEditModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -57,7 +58,7 @@ const AccommodationDetails = () => {
           {showOptions && (
             <OptionsMenu 
               showOptions={showOptions}
-              onEdit={() => console.log("Edit")} 
+              onEdit={() => setEditModalOpen(true)}
               onArchive={() => console.log("Archive")} 
               onDelete={handleDelete} 
             />
@@ -83,6 +84,12 @@ const AccommodationDetails = () => {
       <p className="text-gray-600">Deposit: ₩{accommodation.security_deposit?.toLocaleString()}</p>
       <p className="text-gray-600">{accommodation.bedrooms} bed • {accommodation.bathrooms} bath</p>
       <p className="text-gray-600">Location: {accommodation.location}</p>
+
+      <EditAccommodationModal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setEditModalOpen(false)} 
+        accommodation={accommodation} 
+      />
     </div>
   );
 };

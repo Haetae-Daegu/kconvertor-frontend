@@ -49,6 +49,18 @@ export const useAccommodation = () => {
     }
   };
 
+  const updateAccommodation = async (id: number, data: AccommodationCreate) => {
+    try {
+      const updatedAccommodation = await accommodationService.update(id, data);
+      setAccommodations(prev => prev.map(accommodation => 
+        accommodation.id === id ? updatedAccommodation : accommodation
+      ));
+      return updatedAccommodation;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const getAccommodationById = useCallback(async (id: number) => {
     try {
       const data = await accommodationService.getById(id);
@@ -77,6 +89,7 @@ export const useAccommodation = () => {
     isLoading, 
     handleData, 
     createAccommodation, 
+    updateAccommodation,
     getAccommodationById, 
     deleteAccommodation
   };

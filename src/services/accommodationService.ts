@@ -43,6 +43,11 @@ export const accommodationService = {
     return response.data;
   },
 
+  async update(id: number, data: AccommodationCreate) {
+    const response = await axiosInstance.put(`/accommodations/${id}`, data);
+    return response.data;
+  },
+
   async getById(id: number) {
     const response = await axiosInstance.get(`/accommodations/${id}`);
     return response.data;
