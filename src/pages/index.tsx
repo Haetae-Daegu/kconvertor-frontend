@@ -35,7 +35,6 @@ export default function Main() {
       
       <div className="flex-1 py-10 px-4">
         <div className="flex justify-between items-center mb-4">
-          <p className="text-lg font-semibold">Featured Locations</p>
           <button
             onClick={() => setIsModalOpen(true)}
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 flex items-center gap-2"
@@ -43,7 +42,7 @@ export default function Main() {
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
             </svg>
-            Create Listing
+            Create accommodation
           </button>
         </div>
         <div className="flex flex-col md:flex-row gap-4">

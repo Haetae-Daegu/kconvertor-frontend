@@ -3,6 +3,8 @@ import Image from "next/image";
 import { useAccommodation } from "@/hooks/useAccommodation";
 import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
+import ImageSlider from "@/components/ImageSlider";
+import OptionsMenu from "@/components/OptionsMenu";
 
 const AccommodationDetails = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -53,51 +55,27 @@ const AccommodationDetails = () => {
           </button>
 
           {showOptions && (
-            <div className={`absolute right-0 z-10 mt-2 w-48 bg-white border border-gray-300 rounded shadow-lg transition-all duration-300 transform ${showOptions ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-1'}`}>
-              <div className="py-1">
-                <button 
-                  onClick={() => {/* Logic to edit the accommodation */}} 
-                  className="block px-4 py-2 text-black hover:bg-gray-100 w-full text-left"
-                >
-                  Edit
-                </button>
-                <hr className="border-gray-300" />
-                <button 
-                  onClick={() => {/* Logic to archive the accommodation */}} 
-                  className="block px-4 py-2 text-black hover:bg-gray-100 w-full text-left"
-                >
-                  Archive
-                </button>
-                <hr className="border-gray-300" />
-                <button 
-                  onClick={handleDelete} 
-                  className="block px-4 py-2 bg-red-500 text-white hover:bg-red-600 w-full text-left"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
+            <OptionsMenu 
+              showOptions={showOptions}
+              onEdit={() => console.log("Edit")} 
+              onArchive={() => console.log("Archive")} 
+              onDelete={handleDelete} 
+            />
           )}
         </div>
       </div>
       
-      <h1 className="text-2xl font-bold">{accommodation.title}</h1>
-      <Image
-        width={600}
-        height={400}
-        src={accommodation?.image_urls?.[0] || "/default.jpg"}
-        alt={accommodation.title}
-        className="rounded-lg my-4"
+      <ImageSlider 
+        images={accommodation?.image_urls || []} 
+        defaultImage="/default.jpg" 
       />
+      <h1 className="text-2xl font-bold">{accommodation.title}</h1>
       <p className="text-gray-700">{accommodation.description}</p>
       <p className="text-lg font-semibold mt-2">Amenities :</p>
       <div className="grid grid-cols-2 gap-4">
         {accommodation.amenities?.map((amenity, index) => (
           <div key={index} className="flex items-center">
-            <span className="mr-2">
-              <i className="fa-solid fa-check"></i>
-            </span>
-            <span>{amenity}</span>
+            <span className="ml-2">{amenity}</span>
           </div>
         ))}
       </div>
