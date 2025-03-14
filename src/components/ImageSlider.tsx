@@ -5,10 +5,9 @@ import "slick-carousel/slick/slick-theme.css";
 
 interface ImageSliderProps {
   images: string[];
-  defaultImage?: string;
 }
 
-const ImageSlider: React.FC<ImageSliderProps> = ({ images, defaultImage }) => {
+const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
   const settings = {
     dots: true,
     infinite: true,

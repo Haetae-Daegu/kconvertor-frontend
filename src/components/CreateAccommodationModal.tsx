@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAccommodation } from '@/hooks/useAccommodation';
 import { toast } from 'react-hot-toast';
+import Image from 'next/image';
 
 const AMENITIES = [
   "TV", "Washing Machine", "Refrigerator", "Air Conditioning", "Microwave",
@@ -319,10 +320,12 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
                 <div className="grid grid-cols-3 gap-4">
                   {images.map((image, index) => (
                     <div key={index} className="relative">
-                      <img
+                      <Image
                         src={URL.createObjectURL(image)}
                         alt={`Preview ${index + 1}`}
                         className="w-full h-32 object-cover rounded-lg"
+                        width={128}
+                        height={128}
                       />
                       <button
                         type="button"

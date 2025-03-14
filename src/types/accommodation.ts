@@ -13,4 +13,5 @@ export interface Accommodation {
   latitude: number;
   longitude: number;
   image_urls: string[];
+  minimum_stay: number;
 } 

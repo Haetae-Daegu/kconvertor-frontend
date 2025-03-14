@@ -68,7 +68,6 @@ const AccommodationDetails = () => {
       
       <ImageSlider 
         images={accommodation?.image_urls || []} 
-        defaultImage="/default.jpg" 
       />
       <h1 className="text-2xl font-bold">{accommodation.title}</h1>
       <p className="text-gray-700">{accommodation.description}</p>

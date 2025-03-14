@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useAccommodation } from '@/hooks/useAccommodation';
+import { Accommodation } from '@/types/accommodation';
 
 
 const AMENITIES = [
@@ -8,7 +9,7 @@ const AMENITIES = [
   "Super Single Beds", "Desk", "Balcony", "Kitchen", "Living Room", "Internet"
 ];
 
-const EditAccommodationModal = ({ isOpen, onClose, accommodation }: { isOpen: boolean; onClose: () => void; accommodation: any }) => {
+const EditAccommodationModal = ({ isOpen, onClose, accommodation }: { isOpen: boolean; onClose: () => void; accommodation: Accommodation }) => {
   const { updateAccommodation } = useAccommodation();
   const [formData, setFormData] = useState({
     title: accommodation.title,
