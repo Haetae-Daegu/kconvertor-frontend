@@ -6,7 +6,7 @@ import ImageSlider from "@/components/ImageSlider";
 import OptionsMenu from "@/components/OptionsMenu";
 import EditAccommodationModal from "@/components/EditAccommodationModal";
 import dynamic from "next/dynamic";
-import { FaTv, FaSnowflake, FaBed, FaDesktop, FaUtensils, FaCouch, FaWifi, FaDoorOpen, FaHotTub } from 'react-icons/fa';
+import { FaTv, FaSnowflake, FaBed, FaDesktop, FaUtensils, FaCouch, FaWifi, FaDoorOpen } from 'react-icons/fa';
 import { MdMicrowave } from "react-icons/md";
 import { RiFridgeFill } from "react-icons/ri";
 import { LuWashingMachine } from "react-icons/lu";
@@ -46,6 +46,8 @@ const AccommodationDetails = () => {
     }
   }, [id, getAccommodationById]);
 
+  if (isLoading) return <Loading />;
+
   const handleDelete = async () => {
     try {
       const response = await deleteAccommodation(Number(id));
@@ -57,6 +59,7 @@ const AccommodationDetails = () => {
         toast.error(`Error: ${errorData.message}`);
       }
     } catch (error) {
+      console.error("Error deleting accommodation:", error);
       toast.error("An error occurred while deleting the accommodation.");
     }
   };
