@@ -5,17 +5,44 @@ import { toast } from 'react-hot-toast';
 import ImageSlider from "@/components/ImageSlider";
 import OptionsMenu from "@/components/OptionsMenu";
 import EditAccommodationModal from "@/components/EditAccommodationModal";
+import dynamic from "next/dynamic";
+import { FaTv, FaSnowflake, FaBed, FaDesktop, FaUtensils, FaCouch, FaWifi, FaDoorOpen, FaHotTub } from 'react-icons/fa';
+import { MdMicrowave } from "react-icons/md";
+import { RiFridgeFill } from "react-icons/ri";
+import { LuWashingMachine } from "react-icons/lu";
+import Loading from "@/components/Loading";
+
+const AMENITIES = [
+  { name: "TV", icon: <FaTv /> },
+  { name: "Washing Machine", icon: <LuWashingMachine /> },
+  { name: "Refrigerator", icon: <RiFridgeFill /> },
+  { name: "Air Conditioning", icon: <FaSnowflake /> },
+  { name: "Microwave", icon: <MdMicrowave /> },
+  { name: "Super Single Beds", icon: <FaBed /> },
+  { name: "Desk", icon: <FaDesktop /> },
+  { name: "Balcony", icon: <FaDoorOpen/> },
+  { name: "Kitchen", icon: <FaUtensils /> },
+  { name: "Living Room", icon: <FaCouch /> },
+  { name: "Internet", icon: <FaWifi /> },
+  { name: "Air Conditioner", icon: <FaSnowflake /> },
+];
 
 const AccommodationDetails = () => {
   const [showOptions, setShowOptions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { accommodation, getAccommodationById, deleteAccommodation } = useAccommodation();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
+  const MapNoSSR = dynamic(() => import("@/components/Map"), { ssr: false });
+
 
   useEffect(() => {
     if (id) {
-      getAccommodationById(Number(id));
+      setIsLoading(true);
+      getAccommodationById(Number(id)).then(() => {
+        setIsLoading(false);
+      });
     }
   }, [id, getAccommodationById]);
 
@@ -30,7 +57,6 @@ const AccommodationDetails = () => {
         toast.error(`Error: ${errorData.message}`);
       }
     } catch (error) {
-      console.error(error);
       toast.error("An error occurred while deleting the accommodation.");
     }
   };
@@ -38,7 +64,8 @@ const AccommodationDetails = () => {
   if (!accommodation) return <p>Loading...</p>;
 
   return (
-    <div className="container mx-auto p-4">
+    <>
+    <div className="container mx-auto p-4 overflow-auto">
       <div className="flex justify-between items-center">
         <button 
           onClick={() => router.back()} 
@@ -65,31 +92,40 @@ const AccommodationDetails = () => {
           )}
         </div>
       </div>
+      <EditAccommodationModal 
+        isOpen={isEditModalOpen} 
+        onClose={() => setEditModalOpen(false)} 
+        accommodation={accommodation}
+      />
+      <h1 className="text-5xl font-bold mb-4">{accommodation.title}</h1>
       
       <ImageSlider 
         images={accommodation?.image_urls || []} 
       />
-      <h1 className="text-2xl font-bold">{accommodation.title}</h1>
-      <p className="text-gray-700">{accommodation.description}</p>
-      <p className="text-lg font-semibold mt-2">Amenities :</p>
-      <div className="grid grid-cols-2 gap-4">
-        {accommodation.amenities?.map((amenity, index) => (
-          <div key={index} className="flex items-center">
-            <span className="ml-2">{amenity}</span>
-          </div>
-        ))}
+      <div className="mt-10">
+        <h1 className="text-3xl font-bold mt-2 mb-4 border-b border-gray-300">Description</h1>
+        <p className="text-gray-700">{accommodation.description}</p>
+        <h1 className="text-3xl font-semibold mt-4 mb-4 border-b border-gray-300">Facilities</h1>
+        <div className="grid grid-cols-2 gap-4">
+          {AMENITIES.filter(amenity => accommodation.amenities?.includes(amenity.name)).map((amenity, index) => (
+            <div key={index} className="flex items-center">
+              {amenity.icon}
+              <span className="ml-2">{amenity.name}</span>
+            </div>
+          ))}
+        </div>
+        <h1 className="text-3xl font-semibold mt-4 mb-4 border-b border-gray-300">Pricing</h1>
+        <p className="text-lg font-semibold mt-2">₩{accommodation.price_per_month?.toLocaleString()} / month</p>
+        <p className="text-gray-600">Deposit: ₩{accommodation.security_deposit?.toLocaleString()}</p>
+        <p className="text-gray-600">{accommodation.bedrooms} bed • {accommodation.bathrooms} bath</p>
+        <p className="text-gray-600">Location: {accommodation.location}</p>
+        <h1 className="text-2xl font-bold mt-4 mb-4 border-b border-gray-300">MAP</h1>
+        <div className="w-[80%] h-[500px] mt-1 ml-0">
+          <MapNoSSR accommodations={[accommodation]} defaultPos={[accommodation.latitude, accommodation.longitude]} />
+        </div>
       </div>
-      <p className="text-lg font-semibold mt-2">₩{accommodation.price_per_month?.toLocaleString()} / month</p>
-      <p className="text-gray-600">Deposit: ₩{accommodation.security_deposit?.toLocaleString()}</p>
-      <p className="text-gray-600">{accommodation.bedrooms} bed • {accommodation.bathrooms} bath</p>
-      <p className="text-gray-600">Location: {accommodation.location}</p>
-
-      <EditAccommodationModal 
-        isOpen={isEditModalOpen} 
-        onClose={() => setEditModalOpen(false)} 
-        accommodation={accommodation} 
-      />
     </div>
+  </>
   );
 };
 

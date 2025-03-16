@@ -47,7 +47,7 @@ export default function Main() {
         </div>
         <div className="flex flex-col md:flex-row gap-4">
           <div className="w-full md:w-2/3 min-h-[400px] md:min-h-[600px] border border-gray-300 rounded-lg shadow-lg overflow-hidden">
-            <MapNoSSR accommodations={accommodations} />
+            <MapNoSSR accommodations={accommodations} defaultPos={[35.85395132289147, 128.4871227258607]} />
           </div>
           <div className="w-full md:w-1/3 min-h-[400px] md:min-h-[600px] border border-gray-300 rounded-lg shadow-lg overflow-y-auto">
             <AccommodationList 

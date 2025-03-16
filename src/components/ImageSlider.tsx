@@ -19,10 +19,10 @@ const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
         <Image
           src={images[i]}
           alt={`Thumbnail ${i + 1}`}
-          fill
+          width={400}
+          height={400}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
           priority
-          className="object-cover rounded"
         />
       </div>
     ),
