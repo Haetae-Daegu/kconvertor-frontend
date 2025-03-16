@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@types/leaflet": "^1.9.16",
+    "@vercel/analytics": "^1.5.0",
     "again": "^0.0.1",
     "axios": "^0.24.0",
     "date-fns": "^4.1.0",

@@ -51,16 +51,6 @@ const AccommodationList: React.FC<AccommodationListProps> = ({ accommodations, e
               alt={accommodation.title}
               className="w-full h-40 object-cover rounded-t-lg"
             />
-            <div className="absolute left-2 top-1/2 transform -translate-y-1/2">
-              <button className="bg-white/80 rounded-full w-6 h-6 flex items-center justify-center">
-                <span className="text-gray-600">&lt;</span>
-              </button>
-            </div>
-            <div className="absolute right-2 top-1/2 transform -translate-y-1/2">
-              <button className="bg-white/80 rounded-full w-6 h-6 flex items-center justify-center">
-                <span className="text-gray-600">&gt;</span>
-              </button>
-            </div>
           </div>
           <div className="p-3">
             <h3 className="text-base font-medium mb-1">{accommodation.title}</h3>
