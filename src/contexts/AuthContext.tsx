@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUser(data);
         }
       } catch (error) {
+        console.error('Error checkAuth', error);
         localStorage.removeItem('auth_token');
         setUser(null);
       } finally {
@@ -65,8 +66,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       
       return data;
-    } catch (error: any) {
-      const message = error.response?.data?.message || 'Error connection';
+    } catch (error: unknown) {
+      const message = (error as Error).message || 'Error connection';
       throw new Error(message);
     }
   };

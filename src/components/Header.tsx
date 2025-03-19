@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation'
 import { useAuth } from '@/contexts/AuthContext';
+import Link from 'next/link';
 
     
 const Header: React.FC = () => {
@@ -22,7 +23,7 @@ const Header: React.FC = () => {
     <header>
       <nav className="bg-white border-gray-200 px-4 lg:px-6 py-2.5 dark:bg-gray-800">
           <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <a href="/" className="flex items-center">
+            <Link href="/" className="flex items-center">
               <Image 
                 width={100}
                 height={100}
@@ -31,7 +32,7 @@ const Header: React.FC = () => {
                 className="h-10 w-10 mr-2" 
               />
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Haetae</span>
-            </a>
+            </Link>
             <div className="flex items-center lg:order-2">
               {user ? (
                 <button 

@@ -4,6 +4,11 @@ import Link from 'next/link';
 import { toast } from 'react-hot-toast';
 import { useAuth } from '@/contexts/AuthContext';
 
+interface LoginError {
+  message: string;
+  status?: number;
+}
+
 const Login = () => {
   const router = useRouter();
   const { login, isAuthenticated } = useAuth();
@@ -11,7 +16,6 @@ const Login = () => {
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   
-  // Rediriger si déjà connecté
   if (isAuthenticated) {
     router.push('/');
     return null;
@@ -20,17 +24,18 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
-    const loadingToast = toast.loading('Connexion en cours...');
+    const loadingToast = toast.loading('Connection in progress...');
     try {
       
       await login(email, password);
       
       toast.dismiss(loadingToast);
-      toast.success('Connexion réussie!');
+      toast.success('Connection successful!');
       router.push('/');
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as LoginError;
       toast.dismiss(loadingToast);
-      toast.error(err.message || 'Une erreur inattendue est survenue');
+      toast.error(error.message || 'An error occurred');
     } finally {
       setIsLoading(false);
     }

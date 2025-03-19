@@ -5,10 +5,7 @@ import { Analytics } from '@vercel/analytics/react';
 import Header from '@/components/Header';
 import { AuthProvider } from '@/contexts/AuthContext';
 
-export default function MyApp({ 
-  Component,
-  pageProps: { session, ...pageProps },
-}: AppProps) {
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <AuthProvider>
       <Header />
