@@ -1,42 +1,41 @@
-import ErrorPanel from "@/components/ErrorPanel";
-import axios from "axios";
-import Link from "next/link";
-import { useRouter } from 'next/navigation'
-import { FormEvent, useState } from "react";
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL
-
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { toast } from 'react-hot-toast';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
-  const router = useRouter()
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string | null>("")
-
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    try {
-      setError(null)
-      const response = await axios.post(`${API_URL}/auth/login`, {email, password});
-      localStorage.setItem('token', response.data.access_token)
-      router.push("/")
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        if (err.response) {
-          const status = err.response.status
-          if (status === 500) {
-            setError("Internal server error: Please try again later.");
-          } else {
-            setError("We can't seem to find that email and password combination, try another?");
-          }
-        } else if (err.request) {
-          setError("Service unavailable. Please try again later.")
-        }
-      }
-    }
+  const router = useRouter();
+  const { login, isAuthenticated } = useAuth();
+  const [email, setEmail] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(false);
+  
+  // Rediriger si déjà connecté
+  if (isAuthenticated) {
+    router.push('/');
+    return null;
   }
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const loadingToast = toast.loading('Connexion en cours...');
+    try {
+      
+      await login(email, password);
+      
+      toast.dismiss(loadingToast);
+      toast.success('Connexion réussie!');
+      router.push('/');
+    } catch (err: any) {
+      toast.dismiss(loadingToast);
+      toast.error(err.message || 'Une erreur inattendue est survenue');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="absolute inset-0 bg-grid-gray-300 opacity-50"></div>
@@ -55,6 +54,7 @@ const Login = () => {
                 className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="pippo@gmail.com"
                 required
+                disabled={isLoading}
               />
             </div>
             <div>
@@ -66,14 +66,15 @@ const Login = () => {
                 className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                 placeholder="Enter your password"
                 required
+                disabled={isLoading}
               />
             </div>
-            {error && <ErrorPanel message={error}/>}
             <button
               type="submit"
-              className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"
+              className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition disabled:opacity-50"
+              disabled={isLoading}
             >
-              Log In
+              {isLoading ? "Connection..." : "Log In"}
             </button>
           </form>
 
@@ -81,6 +82,7 @@ const Login = () => {
             <Link href="/">
               <button
                 className="w-full bg-yellow-500 border border-black text-white py-2 rounded-md hover:bg-gray-800 transition"
+                disabled={isLoading}
               >
                 Visitor
               </button>
@@ -96,6 +98,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Login;
