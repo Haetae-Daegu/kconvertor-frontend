@@ -1,10 +1,12 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import axios from 'axios';
+import axios, {AxiosError} from "axios";
 import { useRouter } from 'next/router';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 type User = {
+  created_at: string;
+  updated_at: string;
   id: string;
   email: string;
   name: string;
@@ -13,6 +15,7 @@ type User = {
 type AuthContextType = {
   user: User | null;
   loading: boolean;
+  token: string | null;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isAuthenticated: boolean;
@@ -23,25 +26,29 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
+  const [token, setToken] = useState<string | null>(null);
   const router = useRouter();
 
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const token = localStorage.getItem('auth_token');
+        const storedToken = localStorage.getItem('auth_token');
         
-        if (token) {
+        if (storedToken) {
+          setToken(storedToken);
           const { data } = await axios.get(`${API_URL}/auth/me`, {
             headers: {
-              Authorization: `Bearer ${token}`
+              Authorization: `Bearer ${storedToken}`
             }
           });
           
           setUser(data);
         }
-      } catch (error) {
-        console.error('Error checkAuth', error);
+      } catch (err: unknown) {
+        const error = err as AxiosError
+        console.log(error.response?.data)
         localStorage.removeItem('auth_token');
+        setToken(null);
         setUser(null);
       } finally {
         setLoading(false);
@@ -59,24 +66,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       
       localStorage.setItem('auth_token', data.access_token);
+      setToken(data.access_token);
       setUser({
         id: data.id,
         email: data.email,
-        name: data.name
+        name: data.username,
+        created_at: data.created_at || new Date().toISOString(),
+        updated_at: data.updated_at || new Date().toISOString()
       });
       
       return data;
-    } catch (error: unknown) {
-      const message = (error as Error).message || 'Error connection';
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      const message = error.response?.data?.message || error.message || 'Error connection';
       throw new Error(message);
     }
   };
 
   const logout = async () => {
     try {
-      const token = localStorage.getItem('auth_token');
-      console.log(token);
-      
       if (token) {
         await axios.post(`${API_URL}/auth/logout`, {}, {
           headers: {
@@ -84,12 +92,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           }
         });
       }
-    } catch (error) {
-      console.error('Error logout', error);
+    } catch (err: unknown) {
+      const error = err as AxiosError;
+      const message = error.response?.data?.message || error.message || 'Error logout';
+      throw new Error(message);
     } finally {
       localStorage.removeItem('auth_token');
+      setToken(null);
       setUser(null);
-      router.push('/auth/login');
+      router.push('/');
     }
   };
 
@@ -97,7 +108,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     <AuthContext.Provider 
       value={{ 
         user, 
-        loading, 
+        loading,
+        token,
         login, 
         logout, 
         isAuthenticated: !!user 
