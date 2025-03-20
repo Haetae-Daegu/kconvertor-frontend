@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { User } from '@/types/user';
+import { getAuthHeader } from '@/utils/authUtils';
 
 interface UserUpdate {
   username: string;
@@ -7,13 +8,6 @@ interface UserUpdate {
 }
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
-
-const getAuthHeader = () => {
-  const token = localStorage.getItem('auth_token');
-  return {
-    Authorization: `Bearer ${token}`
-  };
-};
 
 export const userService = {
   async getProfile(): Promise<User> {

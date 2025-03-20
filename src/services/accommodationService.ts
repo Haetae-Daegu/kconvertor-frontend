@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '@/config/api';
+import { getAuthHeader } from '@/utils/authUtils';
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -35,8 +36,10 @@ export const accommodationService = {
   async create(data: FormData | AccommodationCreate) {
     const response = await axiosInstance.post('/accommodations/', data, {
       headers: data instanceof FormData ? {
+        ...getAuthHeader(),
         'Content-Type': 'multipart/form-data',
       } : {
+        ...getAuthHeader(),
         'Content-Type': 'application/json',
       },
     });
@@ -56,5 +59,5 @@ export const accommodationService = {
   async delete(id: number) {
     const response = await axiosInstance.delete(`/accommodations/${id}`);
     return response;
-  }
+  },
 }; 
