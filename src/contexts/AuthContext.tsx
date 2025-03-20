@@ -9,7 +9,7 @@ type User = {
   updated_at: string;
   id: string;
   email: string;
-  name: string;
+  username: string;
 };
 
 type AuthContextType = {
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setUser({
         id: data.id,
         email: data.email,
-        name: data.username,
+        username: data.username,
         created_at: data.created_at || new Date().toISOString(),
         updated_at: data.updated_at || new Date().toISOString()
       });
