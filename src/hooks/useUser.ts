@@ -2,10 +2,15 @@ import { useState, useCallback } from 'react';
 import { userService } from '@/services/userService';
 import { User } from '@/types/user';
 import { useAuth } from '@/contexts/AuthContext';
+import { toast } from 'react-hot-toast';
 
 interface UserUpdate {
   username: string;
   email: string;
+  discord_username?: string;
+  phone_number?: string;
+  instagram_username?: string;
+  kakaotalk_id?: string;
 }
 
 export const useUser = () => {
@@ -41,9 +46,11 @@ export const useUser = () => {
       setError(null);
       const updatedUser = await userService.updateProfile(data);
       setUser(updatedUser);
+      toast.success('Profile updated successfully!');
       return updatedUser;
     } catch (error) {
       setError(error as string);
+      toast.error('Failed to update profile data');
       throw error;
     } finally {
       setIsLoading(false);

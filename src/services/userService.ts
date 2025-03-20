@@ -12,7 +12,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL;
 export const userService = {
   async getProfile(): Promise<User> {
     try {
-      const response = await axios.get(`${API_URL}/users/me`, {
+      const response = await axios.get(`${API_URL}/auth/me`, {
         headers: getAuthHeader()
       });
       return response.data;

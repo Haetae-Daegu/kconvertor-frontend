@@ -12,6 +12,8 @@ import { RiFridgeFill } from "react-icons/ri";
 import { LuWashingMachine } from "react-icons/lu";
 import Loading from "@/components/Loading";
 import { isOwner } from '@/utils/authUtils';
+import ContactHostPanel from "@/components/ContactHostPanel";
+import { User } from "@/types/user";
 
 const AMENITIES = [
   { name: "TV", icon: <FaTv /> },
@@ -36,7 +38,7 @@ const AccommodationDetails = () => {
   const { accommodation, getAccommodationById, deleteAccommodation } = useAccommodation();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const MapNoSSR = dynamic(() => import("@/components/Map"), { ssr: false });
-
+  const [hostInfo, setHostInfo] = useState<User | null>(null);
 
   useEffect(() => {
     if (id) {
@@ -46,6 +48,19 @@ const AccommodationDetails = () => {
       });
     }
   }, [id, getAccommodationById]);
+
+  useEffect(() => {
+    if (accommodation && accommodation.host_id) {
+      fetch(`/api/users/${accommodation.host_id}`)
+        .then(response => response.json())
+        .then(data => {
+          setHostInfo(data);
+        })
+        .catch(error => {
+          toast.error("Error loading host information:", error);
+        });
+    }
+  }, [accommodation]);
 
   if (isLoading) return <Loading />;
 
@@ -65,7 +80,7 @@ const AccommodationDetails = () => {
     }
   };
 
-  if (!accommodation) return <p>Loading...</p>;
+  if (!accommodation) return <Loading />;
 
   return (
     <>
@@ -102,31 +117,42 @@ const AccommodationDetails = () => {
         onClose={() => setEditModalOpen(false)} 
         accommodation={accommodation}
       />
-      <h1 className="text-5xl font-bold mb-4">{accommodation.title}</h1>
-      
-      <ImageSlider 
-        images={accommodation?.image_urls || []} 
-      />
-      <div className="mt-10">
-        <h1 className="text-3xl font-bold mt-2 mb-4 border-b border-gray-300">Description</h1>
-        <p className="text-gray-700">{accommodation.description}</p>
-        <h1 className="text-3xl font-semibold mt-4 mb-4 border-b border-gray-300">Facilities</h1>
-        <div className="grid grid-cols-2 gap-4">
-          {AMENITIES.filter(amenity => accommodation.amenities?.includes(amenity.name)).map((amenity, index) => (
-            <div key={index} className="flex items-center">
-              {amenity.icon}
-              <span className="ml-2">{amenity.name}</span>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="lg:col-span-2">
+          <h1 className="text-5xl font-bold mb-4">{accommodation.title}</h1>
+          
+          <ImageSlider 
+            images={accommodation?.image_urls || []} 
+          />
+          <div className="mt-10">
+            <h1 className="text-3xl font-bold mt-2 mb-4 border-b border-gray-300">Description</h1>
+            <p className="text-gray-700">{accommodation.description}</p>
+            <h1 className="text-3xl font-semibold mt-4 mb-4 border-b border-gray-300">Facilities</h1>
+            <div className="grid grid-cols-2 gap-4">
+              {AMENITIES.filter(amenity => accommodation.amenities?.includes(amenity.name)).map((amenity, index) => (
+                <div key={index} className="flex items-center">
+                  {amenity.icon}
+                  <span className="ml-2">{amenity.name}</span>
+                </div>
+              ))}
             </div>
-          ))}
+            <h1 className="text-3xl font-semibold mt-4 mb-4 border-b border-gray-300">Pricing</h1>
+            <p className="text-lg font-semibold mt-2">₩{accommodation.price_per_month?.toLocaleString()} / month</p>
+            <p className="text-gray-600">Deposit: ₩{accommodation.security_deposit?.toLocaleString()}</p>
+            <p className="text-gray-600">{accommodation.bedrooms} bed • {accommodation.bathrooms} bath</p>
+            <p className="text-gray-600">Location: {accommodation.location}</p>
+            <h1 className="text-2xl font-bold mt-4 mb-4 border-b border-gray-300">MAP</h1>
+            <div className="w-full h-[500px] mt-1 ml-0">
+              <MapNoSSR accommodations={[accommodation]} defaultPos={[accommodation.latitude, accommodation.longitude]} />
+            </div>
+          </div>
         </div>
-        <h1 className="text-3xl font-semibold mt-4 mb-4 border-b border-gray-300">Pricing</h1>
-        <p className="text-lg font-semibold mt-2">₩{accommodation.price_per_month?.toLocaleString()} / month</p>
-        <p className="text-gray-600">Deposit: ₩{accommodation.security_deposit?.toLocaleString()}</p>
-        <p className="text-gray-600">{accommodation.bedrooms} bed • {accommodation.bathrooms} bath</p>
-        <p className="text-gray-600">Location: {accommodation.location}</p>
-        <h1 className="text-2xl font-bold mt-4 mb-4 border-b border-gray-300">MAP</h1>
-        <div className="w-[80%] h-[500px] mt-1 ml-0">
-          <MapNoSSR accommodations={[accommodation]} defaultPos={[accommodation.latitude, accommodation.longitude]} />
+        
+        <div className="lg:col-span-1">
+          <ContactHostPanel 
+            hostInfo={hostInfo} 
+            accommodation={accommodation}
+          />
         </div>
       </div>
     </div>
