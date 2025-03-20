@@ -5,17 +5,19 @@ import LoadingComponent from '@/components/Loading';
 import { toast } from 'react-hot-toast';
 import { FaDiscord, FaInstagram, FaPhone } from 'react-icons/fa';
 import { RiKakaoTalkFill } from 'react-icons/ri';
-import { User } from '@/types/user';
+import { User, UserUpdate } from '@/types/user';
 import { useUser } from '@/hooks/useUser';
 
 const ProfilePage = () => {
   const router = useRouter();
   const { user: authUser, loading: authLoading } = useAuth();
-  const { getUserProfile } = useUser();
+  const { getUserProfile, updateUserProfile } = useUser();
   const [userData, setUserData] = useState<User | null>(null);
   const [userLoading, setUserLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
-  const [editData, setEditData] = useState({
+  const [editData, setEditData] = useState<UserUpdate>({
+    username: '',
+    email: '',
     discord_username: '',
     phone_number: '',
     instagram_username: '',
@@ -39,6 +41,8 @@ const ProfilePage = () => {
           if (data) {
             setUserData(data);
             setEditData({
+              username: data.username,
+              email: data.email,
               discord_username: data.discord_username || '',
               phone_number: data.phone_number || '',
               instagram_username: data.instagram_username || '',
@@ -69,6 +73,25 @@ const ProfilePage = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const saveChanges = async () => {
+    try {
+      setUserLoading(true);
+      const updatedData = await updateUserProfile(editData, Number(authUser?.id));
+      
+      if (updatedData) {
+        setUserData(updatedData);
+        setIsEditing(false);
+        router.reload();
+        toast.success('Contact information updated successfully');
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+      toast.error('Failed to update contact information');
+    } finally {
+      setUserLoading(false);
+    }
   };
 
   if (authLoading || userLoading) {
@@ -194,14 +217,14 @@ const ProfilePage = () => {
                       />
                     </div>
                     
-                    {/* <div className="flex justify-end pt-2">
+                    <div className="flex justify-end pt-2">
                       <button
-                        onClick={handleSaveChanges}
+                        onClick={() => saveChanges()}
                         className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition duration-300"
                       >
                         Save Changes
                       </button>
-                    </div> */}
+                    </div>
                   </div>
                 ) : (
                   <div className="space-y-3">

@@ -22,9 +22,9 @@ export const userService = {
     }
   },
 
-  async updateProfile(data: UserUpdate): Promise<User> {
+  async updateProfile(data: UserUpdate, userId: number): Promise<User> {
     try {
-      const response = await axios.put(`${API_URL}/users/me`, data, {
+      const response = await axios.put(`${API_URL}/users/${userId}`, data, {
         headers: getAuthHeader()
       });
       return response.data;

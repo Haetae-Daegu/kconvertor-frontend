@@ -8,4 +8,13 @@ export interface User {
   kakaotalk_id?: string;
   created_at: string;
   updated_at: string;
-} 
+};
+
+export interface UserUpdate {
+  username: string;
+  email: string;
+  discord_username?: string;
+  phone_number?: string;
+  instagram_username?: string;
+  kakaotalk_id?: string;
+};

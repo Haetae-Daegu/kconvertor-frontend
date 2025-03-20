@@ -1,17 +1,10 @@
 import { useState, useCallback } from 'react';
 import { userService } from '@/services/userService';
-import { User } from '@/types/user';
+import { User, UserUpdate } from '@/types/user';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'react-hot-toast';
 
-interface UserUpdate {
-  username: string;
-  email: string;
-  discord_username?: string;
-  phone_number?: string;
-  instagram_username?: string;
-  kakaotalk_id?: string;
-}
+
 
 export const useUser = () => {
   const [user, setUser] = useState<User | null>(null);
@@ -40,11 +33,11 @@ export const useUser = () => {
     }
   }, [token]);
 
-  const updateUserProfile = async (data: UserUpdate) => {
+  const updateUserProfile = async (data: UserUpdate, userId: number) => {
     try {
       setIsLoading(true);
       setError(null);
-      const updatedUser = await userService.updateProfile(data);
+      const updatedUser = await userService.updateProfile(data, userId);
       setUser(updatedUser);
       toast.success('Profile updated successfully!');
       return updatedUser;
