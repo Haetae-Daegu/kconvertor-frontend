@@ -11,7 +11,6 @@ import { MdMicrowave } from "react-icons/md";
 import { RiFridgeFill } from "react-icons/ri";
 import { LuWashingMachine } from "react-icons/lu";
 import Loading from "@/components/Loading";
-import { useAuth } from "@/contexts/AuthContext";
 import { isOwner } from '@/utils/authUtils';
 
 const AMENITIES = [
@@ -34,7 +33,6 @@ const AccommodationDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { user } = useAuth();
   const { accommodation, getAccommodationById, deleteAccommodation } = useAccommodation();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const MapNoSSR = dynamic(() => import("@/components/Map"), { ssr: false });

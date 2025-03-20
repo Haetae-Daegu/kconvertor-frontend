@@ -1,5 +1,3 @@
-import { useAuth } from "@/contexts/AuthContext";
-
 /**
  * authUtils.ts
  */
@@ -30,8 +28,8 @@ export const isAuthenticated = (): boolean => {
  * @returns the ID of the user or null if not authenticated
  */
 export const getCurrentUserId = (): number | null => {
-  const { user } = useAuth();
-  return Number(user?.id) || null;
+  const userId = localStorage.getItem('user_id');
+  return userId ? parseInt(userId) : null;
 };
 
 /**
