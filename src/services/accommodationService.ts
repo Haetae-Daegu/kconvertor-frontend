@@ -47,7 +47,11 @@ export const accommodationService = {
   },
 
   async update(id: number, data: AccommodationCreate) {
-    const response = await axiosInstance.put(`/accommodations/${id}`, data);
+    const response = await axiosInstance.put(`/accommodations/${id}`, data, {
+      headers: {
+        ...getAuthHeader(),
+      },
+    });
     return response.data;
   },
 
@@ -57,7 +61,11 @@ export const accommodationService = {
   },
 
   async delete(id: number) {
-    const response = await axiosInstance.delete(`/accommodations/${id}`);
+    const response = await axiosInstance.delete(`/accommodations/${id}`, {
+      headers: {
+        ...getAuthHeader(),
+      },
+    });
     return response;
   },
 }; 

@@ -59,7 +59,6 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
       const formDataToSend = new FormData();
       
       images.map((image) => {
-        console.log('Adding image:', image.name, image.type);
         formDataToSend.append('images[]', image, image.name);
       });
 

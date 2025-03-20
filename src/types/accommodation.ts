@@ -1,4 +1,5 @@
 export interface Accommodation {
+  host_id: number;
   id: number;
   title: string;
   description: string;

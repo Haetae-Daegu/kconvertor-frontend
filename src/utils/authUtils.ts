@@ -1,3 +1,5 @@
+import { useAuth } from "@/contexts/AuthContext";
+
 /**
  * authUtils.ts
  */
@@ -21,4 +23,23 @@ export const getAuthHeader = () => {
  */
 export const isAuthenticated = (): boolean => {
   return !!localStorage.getItem('auth_token');
+};
+
+/**
+ * get the ID of the currently authenticated user
+ * @returns the ID of the user or null if not authenticated
+ */
+export const getCurrentUserId = (): number | null => {
+  const { user } = useAuth();
+  return Number(user?.id) || null;
+};
+
+/**
+ * check if the current user is the owner of a resource
+ * @param resourceHostId the ID of the owner of the resource
+ * @returns true if the current user is the owner
+ */
+export const isOwner = (resourceHostId: number): boolean => {
+  const currentUserId = getCurrentUserId();
+  return currentUserId !== null && currentUserId === resourceHostId;
 }; 
