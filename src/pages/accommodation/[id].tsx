@@ -91,7 +91,6 @@ const AccommodationDetails = () => {
               <OptionsMenu 
                 showOptions={showOptions}
                 onEdit={() => setEditModalOpen(true)}
-                onArchive={() => console.log("Archive")} 
                 onDelete={handleDelete} 
               />
             )}

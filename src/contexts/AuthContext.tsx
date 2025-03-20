@@ -66,6 +66,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
       
       localStorage.setItem('auth_token', data.access_token);
+      localStorage.setItem('user_id', data.id);
       setToken(data.access_token);
       setUser({
         id: data.id,
@@ -98,6 +99,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       throw new Error(message);
     } finally {
       localStorage.removeItem('auth_token');
+      localStorage.removeItem('user_id');
       setToken(null);
       setUser(null);
       router.push('/');
