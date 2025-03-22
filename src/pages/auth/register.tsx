@@ -3,6 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
 import { FormEvent, useState } from "react";
+import toast from "react-hot-toast";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
@@ -12,27 +13,27 @@ const Register = () => {
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("")
   const [password, setPassword] = useState<string>("");
-  const [error, setError] = useState<string | null>("")
 
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setError(null)
       const response = await axios.post(`${API_URL}/auth/register`, {username, email, password});
-      if (response.data)
+      if (response.data) {
+        toast.success("Account created successfully")
         router.push("login")
+      }
     } catch (err) {
       if (axios.isAxiosError(err)) {
         if (err.response) {
           const status = err.response.status
           if (status === 500) {
-            setError("Internal server error: Please try again later.");
+            toast.error("Internal server error: Please try again later.");
           } else {
-            setError("This account already exist");
+            toast.error("This account already exist");
           }
         } else if (err.request) {
-          setError("Service unavailable. Please try again later.")
+          toast.error("Service unavailable. Please try again later.")
         }
       }
 
@@ -85,7 +86,6 @@ const Register = () => {
                 <span className="underline hover:underline"> use an existing account</span>
               </Link>
             </p>
-            {error && <ErrorPanel message={error}/>}
             <button
               type="submit"
               className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition"

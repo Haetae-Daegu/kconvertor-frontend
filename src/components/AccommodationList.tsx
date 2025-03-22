@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { Accommodation } from '@/types/accommodation';
 import { FaGhost } from "react-icons/fa";
 import Loading from "./Loading";
+
 interface AccommodationListProps {
   accommodations: Accommodation[];
   error: string | null;
@@ -13,7 +14,6 @@ interface AccommodationListProps {
 const AccommodationList: React.FC<AccommodationListProps> = ({ accommodations, error, isLoading }) => {
   const router = useRouter();
 
-  // For loading animation
   if (isLoading) {
     return <Loading />;
   }
@@ -21,6 +21,7 @@ const AccommodationList: React.FC<AccommodationListProps> = ({ accommodations, e
   if (error) {
     return (
       <div className="flex items-center justify-center h-[400px] md:h-[600px]">
+        <FaGhost className="w-16 h-16 mb-2 animate-bounce" />
         <p className="text-red-500">There was an error loading the data.</p>
       </div>
     );

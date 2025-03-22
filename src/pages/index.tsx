@@ -46,13 +46,9 @@ export default function Main() {
               className="px-4 py-2 text-black rounded-md flex items-center gap-2"
             >
               <a href="#_" className="relative px-6 py-3 font-bold text-black group">
-                  <span className="absolute inset-0 w-full h-full transition duration-300 ease-out transform -translate-x-2 -translate-y-2 bg-blue-300 group-hover:translate-x-0 group-hover:translate-y-0"></span>
-                  <span className="absolute inset-0 w-full h-full border-4 border-black"></span>
-                  <span className="relative">Create</span>
+                  <span className="absolute inset-0 w-full h-full border-2 rounded-lg border-black"></span>
+                  <span className="relative">Post your accommodation</span>
               </a>
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
-              </svg>
             </button>
           }
           <p>Showing <span className="font-bold">{accommodations.length}</span> accommodations around <span className="font-bold">Keimyung University</span>  </p>
