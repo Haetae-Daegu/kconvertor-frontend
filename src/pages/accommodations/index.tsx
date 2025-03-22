@@ -6,34 +6,25 @@ import Image from 'next/image';
 import { useAccommodation } from '@/hooks/useAccommodation';
 import CreateAccommodationModal from '@/components/CreateAccommodationModal';
 import Loading from '@/components/Loading';
+import { AxiosError } from 'axios';
+import { FaGhost } from 'react-icons/fa';
 
 const MyAccommodations: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
   const { user } = useAuth();
-  const { accommodations, deleteAccommodation, getAccommodationByUser } = useAccommodation();
+  const { accommodations, deleteAccommodation, getAccommodationByUser, error, isLoading } = useAccommodation();
   const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
   const [accommodationToDelete, setAccommodationToDelete] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
   useEffect(() => {
     if (!user) {
       router.push('/auth/login');
       return;
     }
+    getAccommodationByUser();
+  }, [user, router, getAccommodationByUser]);
 
-    fetchAccommodations();
-  }, [user, router]);
-
-  const fetchAccommodations = async () => {
-    try {
-      setLoading(true);
-      await getAccommodationByUser();    
-    } catch (error) {
-      toast.error('Unable to load your accommodations');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleDelete = (id: string) => {
     setAccommodationToDelete(id);
@@ -48,8 +39,9 @@ const MyAccommodations: React.FC = () => {
       toast.success('Accommodation successfully deleted');
       setShowDeleteModal(false);
       setAccommodationToDelete(null);
-    } catch (error) {
-      toast.error('Error while deleting');
+    } catch (error: unknown) {
+      const err = error as AxiosError;
+      toast.error(err.message || 'Error while deleting');
     }
   };
 
@@ -58,8 +50,17 @@ const MyAccommodations: React.FC = () => {
     setAccommodationToDelete(null);
   };
 
-  if (loading) {
+  if (isLoading) {
     return <Loading />;
+  }
+
+  if (error) {
+    return (
+      <div className="flex items-center justify-center h-[400px] md:h-[600px]">
+        <FaGhost className="w-16 h-16 mb-2 animate-bounce" />
+        <p className="text-red-500">There was an error loading the data.</p>
+      </div>
+    );
   }
 
   return (

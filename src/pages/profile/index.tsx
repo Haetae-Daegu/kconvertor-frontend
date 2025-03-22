@@ -104,161 +104,160 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 dark:bg-gray-900 py-8">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-500 to-purple-600 px-8 py-6 text-white">
-            <h1 className="text-2xl font-bold">My Profile</h1>
+    <div className="flex items-center justify-center h-screen bg-gray-100 pt-16 overflow-hidden">
+      <div className="fixed inset-x-0 top-16 bottom-0 bg-grid-gray-300 opacity-50 z-10"></div>
+      <div className="fixed inset-x-0 top-16 bottom-0 bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] z-0"></div>
+      
+      <div className="relative w-full max-w-3xl mx-4 z-10 max-h-[calc(100vh-6rem)]">
+        <div className="absolute top-2 left-2 w-full h-full bg-yellow-400 rounded-lg border border-black overflow-y-auto"></div>
+        <div className="relative p-6 bg-white shadow-lg rounded-lg border border-black">
+          <h1 className="text-2xl font-bold text-center mb-6">My Profile</h1>
+          
+          <div className="mb-6 flex justify-between items-center">
+            <button 
+              onClick={() => setIsEditing(!isEditing)}
+              className={`px-4 py-2 rounded-md transition duration-300 ${
+                isEditing 
+                  ? "border border-black bg-gray-200 hover:bg-gray-300 text-black" 
+                  : "bg-black text-white hover:bg-gray-800"
+              }`}
+            >
+              {isEditing ? 'Cancel' : 'Edit Contact Info'}
+            </button>
           </div>
           
-          <div className="p-8">
-            <div className="mb-6 flex justify-between items-center">
-              <div>
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white">{userData.username}</h1>
-                <p className="text-gray-500 dark:text-gray-400">{userData.email}</p>
-              </div>
-              
-              <button 
-                onClick={() => setIsEditing(!isEditing)}
-                className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md transition duration-300"
-              >
-                {isEditing ? 'Cancel' : 'Edit Contact Info'}
-              </button>
-            </div>
-            
-            <div className="space-y-6">
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Account Information</h2>
-                <div className="space-y-3">
-                  <div className="flex items-center">
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-32">User ID:</span>
-                    <span className="text-gray-900 dark:text-white">{userData.id}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-32">Username:</span>
-                    <span className="text-gray-900 dark:text-white">{userData.username}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-32">Email:</span>
-                    <span className="text-gray-900 dark:text-white">{userData.email}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-32">Account Created:</span>
-                    <span className="text-gray-900 dark:text-white">{formatDate(userData.created_at)}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-sm font-medium text-gray-500 dark:text-gray-400 w-32">Last Updated:</span>
-                    <span className="text-gray-900 dark:text-white">{formatDate(userData.updated_at)}</span>
-                  </div>
+          <div className="space-y-6">
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">Account Information</h2>
+              <div className="space-y-3">
+                <div className="flex items-center">
+                  <span className="text-sm font-medium text-gray-500 w-32">User ID:</span>
+                  <span className="text-gray-900">{userData.id}</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm font-medium text-gray-500 w-32">Username:</span>
+                  <span className="text-gray-900">{userData.username}</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm font-medium text-gray-500 w-32">Email:</span>
+                  <span className="text-gray-900">{userData.email}</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm font-medium text-gray-500 w-32">Account Created:</span>
+                  <span className="text-gray-900">{formatDate(userData.created_at)}</span>
+                </div>
+                <div className="flex items-center">
+                  <span className="text-sm font-medium text-gray-500 w-32">Last Updated:</span>
+                  <span className="text-gray-900">{formatDate(userData.updated_at)}</span>
                 </div>
               </div>
-              
-              <div>
-                <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Contact Information</h2>
-                {isEditing ? (
-                  <div className="space-y-4 bg-gray-50 dark:bg-gray-700 p-4 rounded-md">
-                    <div>
-                      <label className="flex items-center mb-2">
-                        <FaDiscord className="mr-2 text-indigo-600" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Discord Username:</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="discord_username"
-                        value={editData.discord_username}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Discord Username"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="flex items-center mb-2">
-                        <FaPhone className="mr-2 text-green-600" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Phone Number:</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="phone_number"
-                        value={editData.phone_number}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Phone Number"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="flex items-center mb-2">
-                        <FaInstagram className="mr-2 text-pink-600" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Instagram Username:</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="instagram_username"
-                        value={editData.instagram_username}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="Instagram Username"
-                      />
-                    </div>
-                    
-                    <div>
-                      <label className="flex items-center mb-2">
-                        <RiKakaoTalkFill className="mr-2 text-yellow-500" />
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">KakaoTalk ID:</span>
-                      </label>
-                      <input
-                        type="text"
-                        name="kakaotalk_id"
-                        value={editData.kakaotalk_id}
-                        onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
-                        placeholder="KakaoTalk ID"
-                      />
-                    </div>
-                    
-                    <div className="flex justify-end pt-2">
-                      <button
-                        onClick={() => saveChanges()}
-                        className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition duration-300"
-                      >
-                        Save Changes
-                      </button>
-                    </div>
+            </div>
+            
+            <div className="border border-gray-200 rounded-lg p-4">
+              <h2 className="text-lg font-semibold text-gray-900 mb-3">Contact Information</h2>
+              {isEditing ? (
+                <div className="space-y-4">
+                  <div>
+                    <label className="flex items-center mb-2">
+                      <FaDiscord className="mr-2 text-indigo-600" />
+                      <span className="text-sm font-medium text-gray-700">Discord Username:</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="discord_username"
+                      value={editData.discord_username}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                      placeholder="Discord Username"
+                    />
                   </div>
-                ) : (
-                  <div className="space-y-3">
-                    <div className="flex items-center">
-                      <span className="flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 w-32">
-                        <FaDiscord className="mr-2 text-indigo-600" />
-                        Discord:
-                      </span>
-                      <span className="text-gray-900 dark:text-white">{userData.discord_username || 'Not provided'}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 w-32">
-                        <FaPhone className="mr-2 text-green-600" />
-                        Phone:
-                      </span>
-                      <span className="text-gray-900 dark:text-white">{userData.phone_number || 'Not provided'}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 w-32">
-                        <FaInstagram className="mr-2 text-pink-600" />
-                        Instagram:
-                      </span>
-                      <span className="text-gray-900 dark:text-white">{userData.instagram_username || 'Not provided'}</span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="flex items-center text-sm font-medium text-gray-500 dark:text-gray-400 w-32">
-                        <RiKakaoTalkFill className="mr-2 text-yellow-500" />
-                        KakaoTalk:
-                      </span>
-                      <span className="text-gray-900 dark:text-white">{userData.kakaotalk_id || 'Not provided'}</span>
-                    </div>
+                  
+                  <div>
+                    <label className="flex items-center mb-2">
+                      <FaPhone className="mr-2 text-green-600" />
+                      <span className="text-sm font-medium text-gray-700">Phone Number:</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="phone_number"
+                      value={editData.phone_number}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                      placeholder="Phone Number"
+                    />
                   </div>
-                )}
-              </div>
+                  
+                  <div>
+                    <label className="flex items-center mb-2">
+                      <FaInstagram className="mr-2 text-pink-600" />
+                      <span className="text-sm font-medium text-gray-700">Instagram Username:</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="instagram_username"
+                      value={editData.instagram_username}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                      placeholder="Instagram Username"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="flex items-center mb-2">
+                      <RiKakaoTalkFill className="mr-2 text-yellow-500" />
+                      <span className="text-sm font-medium text-gray-700">KakaoTalk ID:</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="kakaotalk_id"
+                      value={editData.kakaotalk_id}
+                      onChange={handleInputChange}
+                      className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                      placeholder="KakaoTalk ID"
+                    />
+                  </div>
+                  
+                  <div className="flex justify-end pt-2">
+                    <button
+                      onClick={() => saveChanges()}
+                      className="w-full bg-black text-white py-2 rounded-md hover:bg-gray-800 transition duration-300"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  <div className="flex items-center">
+                    <span className="flex items-center text-sm font-medium text-gray-500 w-32">
+                      <FaDiscord className="mr-2 text-indigo-600" />
+                      Discord:
+                    </span>
+                    <span className="text-gray-900">{userData.discord_username || 'Not provided'}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="flex items-center text-sm font-medium text-gray-500 w-32">
+                      <FaPhone className="mr-2 text-green-600" />
+                      Phone:
+                    </span>
+                    <span className="text-gray-900">{userData.phone_number || 'Not provided'}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="flex items-center text-sm font-medium text-gray-500 w-32">
+                      <FaInstagram className="mr-2 text-pink-600" />
+                      Instagram:
+                    </span>
+                    <span className="text-gray-900">{userData.instagram_username || 'Not provided'}</span>
+                  </div>
+                  <div className="flex items-center">
+                    <span className="flex items-center text-sm font-medium text-gray-500 w-32">
+                      <RiKakaoTalkFill className="mr-2 text-yellow-500" />
+                      KakaoTalk:
+                    </span>
+                    <span className="text-gray-900">{userData.kakaotalk_id || 'Not provided'}</span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>

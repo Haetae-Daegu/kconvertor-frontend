@@ -73,9 +73,13 @@ export const useAccommodation = () => {
   const getAccommodationByUser = useCallback(async () => {
     try {
       const data = await accommodationService.getByUser();
+      setIsLoading(true);
       setAccommodations(data);
     } catch (error) {
+      setError(error as string);
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
