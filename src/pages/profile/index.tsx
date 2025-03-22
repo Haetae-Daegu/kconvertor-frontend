@@ -1,7 +1,7 @@
 import { useAuth } from '@/contexts/AuthContext';
 import { useRouter } from 'next/router';
 import { useEffect, useState, useRef } from 'react';
-import LoadingComponent from '@/components/Loading';
+import Loading from '@/components/Loading';
 import { toast } from 'react-hot-toast';
 import { FaDiscord, FaInstagram, FaPhone } from 'react-icons/fa';
 import { RiKakaoTalkFill } from 'react-icons/ri';
@@ -95,12 +95,12 @@ const ProfilePage = () => {
   };
 
   if (authLoading || userLoading) {
-    return <LoadingComponent />;
+    return <Loading />;
   }
 
   if (!userData) {
     toast.error('Failed to load profile data');
-    return <LoadingComponent />;
+    return <Loading />;
   }
 
   return (

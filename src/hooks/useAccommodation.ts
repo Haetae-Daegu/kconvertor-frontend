@@ -68,6 +68,15 @@ export const useAccommodation = () => {
     } catch (error) {
       throw error;
     }
+  }, []); 
+
+  const getAccommodationByUser = useCallback(async () => {
+    try {
+      const data = await accommodationService.getByUser();
+      setAccommodations(data);
+    } catch (error) {
+      throw error;
+    }
   }, []);
 
   const deleteAccommodation = async (id: number) => {
@@ -90,7 +99,8 @@ export const useAccommodation = () => {
     handleData, 
     createAccommodation, 
     updateAccommodation,
-    getAccommodationById, 
+    getAccommodationById,
+    getAccommodationByUser,
     deleteAccommodation
   };
 }

@@ -60,6 +60,15 @@ export const accommodationService = {
     return response.data;
   },
 
+  async getByUser() {
+    const response = await axiosInstance.get('/accommodations/user', {
+      headers: {
+        ...getAuthHeader(),
+      },
+    });
+    return response.data;
+  },
+
   async delete(id: number) {
     const response = await axiosInstance.delete(`/accommodations/${id}`, {
       headers: {
