@@ -57,7 +57,7 @@ const AccommodationDetails = () => {
         setHostInfo(data);
       });
     }
-  }, [accommodation]);
+  }, [accommodation, getUserById]);
 
   if (isLoading) return <Loading />;
 

@@ -1,7 +1,6 @@
 import { useState, useCallback } from 'react'
 import { accommodationService } from '@/services/accommodationService'
 import { Accommodation } from '@/types/accommodation'
-import { userService } from '@/services/userService';
 
 interface AccommodationCreate {
   title: string;
