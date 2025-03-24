@@ -1,6 +1,7 @@
 import { useState, useCallback } from 'react'
 import { accommodationService } from '@/services/accommodationService'
 import { Accommodation } from '@/types/accommodation'
+import { userService } from '@/services/userService';
 
 interface AccommodationCreate {
   title: string;
@@ -60,7 +61,7 @@ export const useAccommodation = () => {
       throw error;
     }
   };
-
+  
   const getAccommodationById = useCallback(async (id: number) => {
     try {
       const data = await accommodationService.getById(id);

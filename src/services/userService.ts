@@ -22,6 +22,16 @@ export const userService = {
     }
   },
 
+  async getUserById(userId: number): Promise<User> {
+    try {
+      const response = await axios.get(`${API_URL}/users/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching user profile:', error);
+      throw error;
+    }
+  },
+
   async updateProfile(data: UserUpdate, userId: number): Promise<User> {
     try {
       const response = await axios.put(`${API_URL}/users/${userId}`, data, {

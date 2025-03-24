@@ -33,6 +33,15 @@ export const useUser = () => {
     }
   }, [token]);
 
+  const getUserById = useCallback(async (id: number) => {
+    try {
+      const data = await userService.getUserById(id);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  }, []);
+
   const updateUserProfile = async (data: UserUpdate, userId: number) => {
     try {
       setIsLoading(true);
@@ -84,6 +93,7 @@ export const useUser = () => {
     isLoading,
     error,
     getUserProfile,
+    getUserById,
     updateUserProfile,
     changePassword,
     deleteAccount

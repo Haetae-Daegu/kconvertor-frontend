@@ -14,6 +14,7 @@ import Loading from "@/components/Loading";
 import { isOwner } from '@/utils/authUtils';
 import ContactHostPanel from "@/components/ContactHostPanel";
 import { User } from "@/types/user";
+import { useUser } from "@/hooks/useUser";
 
 const AMENITIES = [
   { name: "TV", icon: <FaTv /> },
@@ -35,7 +36,8 @@ const AccommodationDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { accommodation, getAccommodationById, deleteAccommodation } = useAccommodation();
+  const { accommodation, getAccommodationById, deleteAccommodation} = useAccommodation();
+  const { getUserById } = useUser();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const MapNoSSR = dynamic(() => import("@/components/Map"), { ssr: false });
   const [hostInfo, setHostInfo] = useState<User | null>(null);
@@ -51,14 +53,9 @@ const AccommodationDetails = () => {
 
   useEffect(() => {
     if (accommodation && accommodation.host_id) {
-      fetch(`/api/users/${accommodation.host_id}`)
-        .then(response => response.json())
-        .then(data => {
-          setHostInfo(data);
-        })
-        .catch(error => {
-          toast.error("Error loading host information:", error);
-        });
+      getUserById(accommodation.host_id).then(data => {
+        setHostInfo(data);
+      });
     }
   }, [accommodation]);
 
