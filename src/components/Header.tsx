@@ -29,9 +29,9 @@ const Header: React.FC = () => {
               <Image 
                 width={100}
                 height={100}
-                src="/Haetae.png"
+                src="/Haetae-logo.png"
                 alt="Logo"
-                className="h-10 w-10 mr-2" 
+                className="h-20 w-20 mr-2" 
               />
               <span className="self-center text-xl font-semibold whitespace-nowrap dark:text-white">Haetae</span>
             </Link>
