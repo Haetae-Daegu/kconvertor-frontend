@@ -57,7 +57,7 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full px-3 py-2 border border-black rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                placeholder="pippo@gmail.com"
+                placeholder="email@example.com"
                 required
                 disabled={isLoading}
               />
