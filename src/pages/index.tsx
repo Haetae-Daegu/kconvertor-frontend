@@ -33,8 +33,7 @@ export default function Main() {
         <div className="absolute inset-0 bg-black bg-opacity-30" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">Haetae</h1>
-          <h1 className="text-2xl sm:text-2xl md:text-2xl font-bold">The best place to find your next place</h1>
-
+          <h1 className="text-2xl sm:text-2xl md:text-2xl font-bold">The best place <b>to find your next place</b></h1>
         </div>
       </div>
       
