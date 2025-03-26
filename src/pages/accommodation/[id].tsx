@@ -119,7 +119,10 @@ const AccommodationDetails = () => {
           <h1 className="text-5xl font-bold mb-4">{accommodation.title}</h1>
           
           <ImageSlider 
-            images={accommodation?.image_urls || []} 
+            images={accommodation?.image_urls || []}
+            enableFullscreen={true}
+            thumbnailSize="medium"
+            cropMode="smart"
           />
           <div className="mt-10">
             <h1 className="text-3xl font-bold mt-2 mb-4 border-b border-gray-300">Description</h1>

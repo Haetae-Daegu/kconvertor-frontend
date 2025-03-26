@@ -1,49 +1,109 @@
-import Slider from "react-slick";
-import Image from "next/image";
-import "slick-carousel/slick/slick.css"; 
-import "slick-carousel/slick/slick-theme.css";
-
+import { useState } from 'react';
+import Image from 'next/image';
+import { FaExpand, FaTimes } from 'react-icons/fa';
 interface ImageSliderProps {
   images: string[];
+  enableFullscreen?: boolean;
+  thumbnailSize?: 'small' | 'medium' | 'large';
+  cropMode?: 'none' | 'smart';
 }
 
-const ImageSlider: React.FC<ImageSliderProps> = ({ images }) => {
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    customPaging: (i: number) => (
-      <div className="custom-dot">
-        <Image
-          src={images[i]}
-          alt={`Thumbnail ${i + 1}`}
-          width={400}
-          height={400}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-          priority
-        />
-      </div>
-    ),
+const ImageSlider = ({ 
+  images, 
+  enableFullscreen = true, 
+  thumbnailSize = 'medium',
+  cropMode = 'smart' 
+}: ImageSliderProps) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+
+  const thumbnailSizeClass = {
+    small: 'h-12 w-12',
+    medium: 'h-16 w-16',
+    large: 'h-20 w-20'
+  }[thumbnailSize];
+
+  const toggleFullscreen = () => {
+    setIsFullscreen(!isFullscreen);
   };
 
   return (
-    <Slider {...settings}>
-      {images.map((url, index) => (
-        <div key={index} className="relative w-full h-[400px] overflow-hidden">
-          <Image
-            src={url}
-            alt={`Image ${index + 1}`}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw" 
-            priority
-            className="object-contain"
-          />
+    <div className="relative">
+      <div className="relative overflow-hidden rounded-lg h-[400px]">
+        <Image 
+          src={images[currentIndex]} 
+          alt={`Accommodation photo ${currentIndex + 1}`}
+          className={`${cropMode === 'smart' ? 'object-cover' : 'object-contain'}`}
+          fill
+          sizes="(max-width: 768px) 100vw, 700px"
+          priority={currentIndex === 0}
+        />
+        
+        {enableFullscreen && (
+          <button 
+            onClick={toggleFullscreen}
+            className="absolute bottom-4 right-4 bg-white/80 p-2 rounded-full shadow-md"
+          >
+            <FaExpand />
+          </button>
+        )}
+      </div>
+
+      <div className="flex mt-4 space-x-2 overflow-x-auto pb-2">
+        {images.map((img, id) => (
+          <button 
+            key={id} 
+            onClick={() => setCurrentIndex(id)}
+            className={`${thumbnailSizeClass} rounded-md overflow-hidden border-2 transition-all relative ${
+              id === currentIndex ? 'border-blue-500 opacity-100' : 'border-transparent opacity-70'
+            }`}
+          >
+            <Image 
+              src={img} 
+              alt={`Thumbnail ${id + 1}`} 
+              className="object-cover"
+              fill
+              sizes="(max-width: 768px) 96px, 128px"
+            />
+          </button>
+        ))}
+      </div>
+
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
+          <button 
+            onClick={toggleFullscreen}
+            className="absolute top-4 right-4 text-white text-2xl"
+          >
+            <FaTimes />
+          </button>
+          
+          <div className="relative w-full h-full max-w-screen-lg max-h-screen">
+            <Image 
+              src={images[currentIndex]} 
+              alt={`Accommodation photo ${currentIndex + 1}`}
+              className="object-contain"
+              fill
+              sizes="100vw"
+              quality={90}
+            />
+          </div>
+          
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
+            {images.map((_img, id) => (
+              <button 
+                key={id} 
+                onClick={() => setCurrentIndex(id)}
+                className={`h-3 w-3 rounded-full transition-all ${
+                  id === currentIndex ? 'bg-white' : 'bg-gray-500'
+                }`}
+              />
+            ))}
+          </div>
         </div>
-      ))}
-    </Slider>
+      )}
+    </div>
   );
 };
 
-export default ImageSlider; 
+export default ImageSlider;
