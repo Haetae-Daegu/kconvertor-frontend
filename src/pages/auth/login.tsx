@@ -48,7 +48,7 @@ const Login = () => {
       <div className="relative w-96">
         <div className="absolute top-2 left-2 w-full h-full bg-yellow-400 rounded-lg border border-black"></div>
         <div className="relative p-6 bg-white shadow-lg rounded-lg border border-black">
-          <h2 className="text-xl font-bold text-center mb-2">Log in KConvertor</h2>
+          <h2 className="text-xl font-bold text-center mb-2">Log in Haetae</h2>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-gray-700">Email</label>
