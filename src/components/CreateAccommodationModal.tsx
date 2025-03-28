@@ -141,7 +141,7 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
       <div className="relative min-h-screen flex items-center justify-center p-4">
         <div className="bg-white rounded-lg w-full max-w-2xl p-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-semibold">Create New Listing</h2>
+            <h2 className="text-2xl font-semibold">Publish your accommodation</h2>
             {process.env.NODE_ENV === 'development' && (
               <button
                 type="button"

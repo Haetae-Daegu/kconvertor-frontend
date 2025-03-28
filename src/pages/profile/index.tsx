@@ -104,12 +104,10 @@ const ProfilePage = () => {
   }
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-100 pt-16 overflow-hidden">
-      <div className="fixed inset-x-0 top-16 bottom-0 bg-grid-gray-300 opacity-50 z-10"></div>
-      <div className="fixed inset-x-0 top-16 bottom-0 bg-white bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] z-0"></div>
+    <div className="flex items-center justify-center min-h-screen overflow-y-auto">
       
-      <div className="relative w-full max-w-3xl mx-4 z-10 max-h-[calc(100vh-6rem)]">
-        <div className="absolute top-2 left-2 w-full h-full bg-yellow-400 rounded-lg border border-black overflow-y-auto"></div>
+      <div className="relative w-full max-w-3xl mx-4 z-10">
+        <div className="absolute top-2 left-2 w-full h-full bg-yellow-400 rounded-lg border border-black"></div>
         <div className="relative p-6 bg-white shadow-lg rounded-lg border border-black">
           <h1 className="text-2xl font-bold text-center mb-6">My Profile</h1>
           
