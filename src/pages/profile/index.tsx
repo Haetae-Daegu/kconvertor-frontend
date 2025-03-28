@@ -129,10 +129,6 @@ const ProfilePage = () => {
               <h2 className="text-lg font-semibold text-gray-900 mb-3">Account Information</h2>
               <div className="space-y-3">
                 <div className="flex items-center">
-                  <span className="text-sm font-medium text-gray-500 w-32">User ID:</span>
-                  <span className="text-gray-900">{userData.id}</span>
-                </div>
-                <div className="flex items-center">
                   <span className="text-sm font-medium text-gray-500 w-32">Username:</span>
                   <span className="text-gray-900">{userData.username}</span>
                 </div>
