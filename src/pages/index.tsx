@@ -6,6 +6,7 @@ import CreateAccommodationModal from '@/components/CreateAccommodationModal';
 import { useState, useEffect } from 'react';
 import { useAccommodation } from '@/hooks/useAccommodation';
 import { useAuth } from "@/contexts/AuthContext";
+import SEO from '@/components/SEO';
 
 
 export default function Main() {
@@ -21,6 +22,7 @@ export default function Main() {
 
   return (
     <div className="flex flex-col min-h-screen overflow-auto">
+      <SEO />
       <div className="relative w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[350px] overflow-hidden">
         <Image
           src="/KMU2.jpg"
