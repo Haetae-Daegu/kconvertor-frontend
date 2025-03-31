@@ -126,7 +126,13 @@ const AccommodationDetails = () => {
           />
           <div className="mt-10">
             <h1 className="text-3xl font-bold mt-2 mb-4 border-b border-gray-300">Description</h1>
-            <p className="text-gray-700">{accommodation.description}</p>
+            <div className="whitespace-pre-line mt-4 text-gray-700">
+              {accommodation?.description}
+            </div>
+            <h1 className="text-3xl font-bold mt-2 mb-4 border-b border-gray-300">House Rules</h1>
+            <div className="whitespace-pre-line mt-4 text-gray-700">
+              {accommodation?.house_rules}
+            </div>
             <h1 className="text-3xl font-semibold mt-4 mb-4 border-b border-gray-300">Facilities</h1>
             <div className="grid grid-cols-2 gap-4">
               {AMENITIES.filter(amenity => accommodation.amenities?.includes(amenity.name)).map((amenity, index) => (
