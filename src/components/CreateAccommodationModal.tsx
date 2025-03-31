@@ -173,6 +173,7 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
                   type="text"
                   maxLength={200}
                   required
+                  placeholder="e.g. Keimyung University, Daegu"
                   className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                   value={formData.location}
                   onChange={(e) => setFormData({...formData, location: e.target.value})}
