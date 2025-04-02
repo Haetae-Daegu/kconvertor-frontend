@@ -1,48 +1,81 @@
 # KoreanConvertor - Frontend
 
-This project is the frontend application for converting currency between the South Korean Won (KRW) and the Euro (EUR), built with Next.js. It provides an intuitive user interface for real-time conversion and an option to view the history of conversions.
+A Next.js application designed to help international students and expatriates find accommodation in South Korea, with a focus on the Keimyung University area in Daegu.
 
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)  ![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)
+## 🌟 Features
 
-## Features
+- **User Authentication**
+  - Secure login/register system
+  - JWT token-based authentication with refresh tokens
+  - User profile management
 
-- **Currency Conversion**: Instantly convert between Korean Won (KRW) and Euro (EUR).
-- **Conversion History**: View past conversions for easy reference.
-- **User-Friendly Interface**: A simple and clean UI for seamless experience.
+- **Accommodation Listings**
+  - Create and manage accommodation listings
+  - Upload multiple images for each property
+  - Detailed property information including:
+    - Monthly rent and security deposit in KRW
+    - Location details
+    - Room specifications (bedrooms, bathrooms)
+    - Available amenities
+    - House rules
+    - Maximum guests and minimum stay requirements
 
-## Prerequisites
+- **Search & Discovery**
+  - Browse available accommodations
+  - View detailed property information
+  - Image gallery with full-screen viewing capability
+  - Location information
 
-Before you begin, make sure you have the following installed:
+- **User Features**
+  - Save favorite properties
+  - Contact property owners/managers
+  - Manage your own listings
 
-- **Node.js**: v14.x or later
-- **npm** (Node Package Manager) or **yarn**
+## 🛠 Technical Stack
 
-## Installation
+- **Frontend Framework**: Next.js with TypeScript
+- **Styling**: Tailwind CSS
+- **State Management**: React Context
+- **HTTP Client**: Axios
+- **Authentication**: JWT with refresh token mechanism
+- **Image Handling**: Next.js Image optimization
+- **Form Handling**: React forms with validation
 
-To get started with the project, follow these steps:
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 14.x or later
+- npm or yarn
+
+### Installation
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/NicolasYapobi/kconvertor-frontend.git
-   ```
-2. Navigate into the project directory:
-   ```bash
-   cd kconvertor-frontend/app
-   ```
-3. Install the dependencies:
-   ```bash
-   npm install
-   ```
-
-## Usage
-
-To run the application locally, use the following command:
-
 ```bash
-npm run dev
+git clone [repository-url]
 ```
 
-Then, open your browser and go to [http://localhost:3000](http://localhost:3000) to access the application.
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables:
+Create a `.env.local` file with the following variables:
+```env
+NEXT_PUBLIC_API_URL=your_api_url
+```
+
+4. Run the development server:
+```bash
+npm run dev
+# or
+yarn dev
+```
+
+5. Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 ## API
 
@@ -50,12 +83,13 @@ This application connects to an external API to fetch live conversion rates. The
 
 - **Conversion Endpoint**: Provides real-time conversion rates.
 - **Method**: Uses GET requests to retrieve the latest conversion data.
+- **Accommodation Endpoint**: Provides CRUD for users and accommodations
 
-For details on the backend API, refer to the backend repository [here](https://github.com/KoreanConvertor/kconvertor-server).
+For details on the backend API, refer to the backend repository [here](https://github.com/Haetae-Daegu/kconvertor-server).
 
 ## 🚀 Deployment
 
-Lien vers l'application en production : [koreanconvertor.vercel.app](https://koreanconvertor.vercel.app)
+Link of the deployed project : [https://haetaedaegu.vercel.app/](https://haetaedaegu.vercel.app/)
 
 ## Contributing
 
@@ -67,6 +101,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Useful Links
 
-- **Backend Repository**: [KoreanConvertor Backend](https://github.com/KoreanConvertor/kconvertor-server)
+- **Backend Repository**: [KoreanConvertor Backend](https://github.com/Haetae-Daegu/kconvertor-server)
 - **GitHub Profile**: [NicolasYapobi](https://github.com/NicolasYapobi)
 
