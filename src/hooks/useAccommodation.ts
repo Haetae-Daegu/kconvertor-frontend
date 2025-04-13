@@ -60,6 +60,20 @@ export const useAccommodation = () => {
       throw error;
     }
   };
+
+  const updateAccommodationStatus = async (id: number, status: "hidden" | "active" | "booked") => {
+    try {
+      const updatedAccommodation = await accommodationService.updateStatus(id, status);
+      setAccommodations(prev => prev.map(accommodation => 
+        accommodation.id === id ? updatedAccommodation : accommodation
+      ));
+      if (accommodation && accommodation.id === id)
+        setAccommodation(updatedAccommodation);
+      return updatedAccommodation;
+    } catch (error) {
+      throw error;
+    }
+  };
   
   const getAccommodationById = useCallback(async (id: number) => {
     try {
@@ -103,6 +117,7 @@ export const useAccommodation = () => {
     handleData, 
     createAccommodation, 
     updateAccommodation,
+    updateAccommodationStatus,
     getAccommodationById,
     getAccommodationByUser,
     deleteAccommodation

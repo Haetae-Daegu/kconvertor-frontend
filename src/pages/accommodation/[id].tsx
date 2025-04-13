@@ -1,3 +1,4 @@
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { useAccommodation } from "@/hooks/useAccommodation";
 import { useEffect, useState } from "react";
@@ -5,14 +6,14 @@ import { toast } from 'react-hot-toast';
 import ImageSlider from "@/components/ImageSlider";
 import OptionsMenu from "@/components/OptionsMenu";
 import EditAccommodationModal from "@/components/EditAccommodationModal";
-import dynamic from "next/dynamic";
+import AccommodationToggleStatus from "@/components/AccommodationToggleStatus";
+import ContactHostPanel from "@/components/ContactHostPanel";
+import Loading from "@/components/Loading";
 import { FaTv, FaSnowflake, FaBed, FaDesktop, FaUtensils, FaCouch, FaWifi, FaDoorOpen } from 'react-icons/fa';
 import { MdMicrowave } from "react-icons/md";
 import { RiFridgeFill } from "react-icons/ri";
 import { LuWashingMachine } from "react-icons/lu";
-import Loading from "@/components/Loading";
 import { isOwner } from '@/utils/authUtils';
-import ContactHostPanel from "@/components/ContactHostPanel";
 import { User } from "@/types/user";
 import { useUser } from "@/hooks/useUser";
 
@@ -36,7 +37,7 @@ const AccommodationDetails = () => {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { id } = router.query;
-  const { accommodation, getAccommodationById, deleteAccommodation} = useAccommodation();
+  const { accommodation, getAccommodationById, deleteAccommodation, updateAccommodationStatus } = useAccommodation();
   const { getUserById } = useUser();
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const MapNoSSR = dynamic(() => import("@/components/Map"), { ssr: false });
@@ -74,6 +75,18 @@ const AccommodationDetails = () => {
     } catch (error) {
       console.error("Error deleting accommodation:", error);
       toast.error("An error occurred while deleting the accommodation.");
+    }
+  };
+
+  const handleStatusChange = async (newStatus: "hidden" | "active" | "booked") => {
+    try {
+      if (id) {
+        await updateAccommodationStatus(Number(id), newStatus);
+        toast.success(`Status updated successfully !`);
+      }
+    } catch (error) {
+      console.error("Error updating accommodation status:", error);
+      toast.error("Error updating accommodation status.");
     }
   };
 
@@ -124,6 +137,12 @@ const AccommodationDetails = () => {
             thumbnailSize="medium"
             cropMode="smart"
           />
+          {isOwner(accommodation.host_id) && (
+            <AccommodationToggleStatus 
+              accommodation={accommodation}
+              onStatusChange={handleStatusChange}
+            />
+          )}
           <div className="mt-10">
             <h1 className="text-3xl font-bold mt-2 mb-4 border-b border-gray-300">Description</h1>
             <div className="whitespace-pre-line mt-4 text-gray-700">

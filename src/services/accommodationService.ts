@@ -25,6 +25,7 @@ interface AccommodationCreate {
   house_rules?: string;
   latitude?: number;
   longitude?: number;
+  status?: "hidden" | "active" | "booked";
 }
 
 export const accommodationService = {
@@ -48,6 +49,15 @@ export const accommodationService = {
 
   async update(id: number, data: AccommodationCreate) {
     const response = await axiosInstance.put(`/accommodations/${id}`, data, {
+      headers: {
+        ...getAuthHeader(),
+      },
+    });
+    return response.data;
+  },
+
+  async updateStatus(id: number, status: "hidden" | "active" | "booked") {
+    const response = await axiosInstance.put(`/accommodations/${id}/status`, { status }, {
       headers: {
         ...getAuthHeader(),
       },

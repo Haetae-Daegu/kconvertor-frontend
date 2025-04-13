@@ -15,4 +15,5 @@ export interface Accommodation {
   longitude: number;
   image_urls: string[];
   minimum_stay: number;
+  status: "hidden" | "active" | "booked";
 } 
