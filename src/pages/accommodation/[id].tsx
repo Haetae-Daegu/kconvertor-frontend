@@ -3,13 +3,16 @@ import { useRouter } from "next/router";
 import { useAccommodation } from "@/hooks/useAccommodation";
 import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
+
 import ImageSlider from "@/components/ImageSlider";
 import OptionsMenu from "@/components/OptionsMenu";
 import EditAccommodationModal from "@/components/EditAccommodationModal";
 import AccommodationToggleStatus from "@/components/AccommodationToggleStatus";
 import ContactHostPanel from "@/components/ContactHostPanel";
 import Loading from "@/components/Loading";
-import { FaTv, FaSnowflake, FaBed, FaDesktop, FaUtensils, FaCouch, FaWifi, FaDoorOpen } from 'react-icons/fa';
+import CongratulationsModal from "@/components/CongratulationsModal";
+
+import { FaTv, FaSnowflake, FaBed, FaDesktop, FaUtensils, FaCouch, FaWifi, FaDoorOpen, FaBook } from 'react-icons/fa';
 import { MdMicrowave } from "react-icons/md";
 import { RiFridgeFill } from "react-icons/ri";
 import { LuWashingMachine } from "react-icons/lu";
@@ -35,6 +38,7 @@ const AMENITIES = [
 const AccommodationDetails = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showCongratulations, setShowCongratulations] = useState(false);
   const router = useRouter();
   const { id } = router.query;
   const { accommodation, getAccommodationById, deleteAccommodation, updateAccommodationStatus } = useAccommodation();
@@ -82,10 +86,12 @@ const AccommodationDetails = () => {
     try {
       if (id) {
         await updateAccommodationStatus(Number(id), newStatus);
+        if (newStatus === "booked") {
+          setShowCongratulations(true);
+        }
         toast.success(`Status updated successfully !`);
       }
     } catch (error) {
-      console.error("Error updating accommodation status:", error);
       toast.error("Error updating accommodation status.");
     }
   };
@@ -181,7 +187,14 @@ const AccommodationDetails = () => {
         </div>
       </div>
     </div>
-  </>
+
+    <CongratulationsModal
+      isOpen={showCongratulations}
+      onClose={() => setShowCongratulations(false)}
+      message="Your accommodation has been successfully marked as booked! 🎉 Thank you for using our platform!"
+      icon={<FaBook />}
+    />
+    </>
   );
 };
 
