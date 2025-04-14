@@ -42,7 +42,7 @@ const CreateAccommodationModal = ({ isOpen, onClose }: { isOpen: boolean; onClos
 
   const [amenities, setAmenities] = useState<string[]>([]);
   const [images, setImages] = useState<File[]>([]);
-  const maxImages = 6;
+  const maxImages = 8;
   const minImages = 2;
 
   const handleSubmit = async (e: React.FormEvent) => {
