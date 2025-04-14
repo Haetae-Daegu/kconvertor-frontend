@@ -91,7 +91,7 @@ const AccommodationDetails = () => {
         }
         toast.success(`Status updated successfully !`);
       }
-    } catch (error) {
+    } catch {
       toast.error("Error updating accommodation status.");
     }
   };
