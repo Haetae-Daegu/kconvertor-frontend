@@ -26,6 +26,7 @@ interface AccommodationCreate {
   latitude?: number;
   longitude?: number;
   status?: "hidden" | "active" | "booked";
+  image_urls?: string[];
 }
 
 export const accommodationService = {
@@ -47,10 +48,14 @@ export const accommodationService = {
     return response.data;
   },
 
-  async update(id: number, data: AccommodationCreate) {
+  async update(id: number, data: FormData | AccommodationCreate) {
     const response = await axiosInstance.put(`/accommodations/${id}`, data, {
-      headers: {
+      headers: data instanceof FormData ? {
         ...getAuthHeader(),
+        'Content-Type': 'multipart/form-data',
+      } : {
+        ...getAuthHeader(),
+        'Content-Type': 'application/json',
       },
     });
     return response.data;

@@ -16,6 +16,7 @@ interface AccommodationCreate {
   house_rules?: string;
   latitude?: number;
   longitude?: number;
+  image_urls?: string[];
 }
 
 type CreateAccommodationData = FormData | AccommodationCreate;
@@ -49,7 +50,7 @@ export const useAccommodation = () => {
     }
   };
 
-  const updateAccommodation = async (id: number, data: AccommodationCreate) => {
+  const updateAccommodation = async (id: number, data: FormData | AccommodationCreate) => {
     try {
       const updatedAccommodation = await accommodationService.update(id, data);
       setAccommodations(prev => prev.map(accommodation => 
