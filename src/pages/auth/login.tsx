@@ -17,7 +17,7 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   
   if (isAuthenticated) {
-    router.push('/');
+    router.push('/accommodations');
     return null;
   }
 
@@ -31,7 +31,7 @@ const Login = () => {
       
       toast.dismiss(loadingToast);
       toast.success('Connection successful!');
-      router.push('/');
+      router.push('/accommodations');
     } catch (err: unknown) {
       const error = err as LoginError;
       toast.dismiss(loadingToast);

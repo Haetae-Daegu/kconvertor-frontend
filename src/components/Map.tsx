@@ -16,7 +16,7 @@ interface MapProps {
 
 const Map: React.FC<MapProps> = ({ accommodations, defaultPos }) => {
   return (
-    <MapContainer center={defaultPos} zoom={16} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }} className="map-container">
+    <MapContainer center={defaultPos} zoom={15} scrollWheelZoom={false} style={{ height: "100%", width: "100%" }} className="map-container">
       <TileLayer url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_TOKEN}`} />
 
       {accommodations.map((accommodation) => (
