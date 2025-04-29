@@ -20,6 +20,7 @@ const nextConfig = {
         hostname: "accommodations.lon1.digitaloceanspaces.com",
       },
     ],
+    unoptimized: true,
   },
 };
 
