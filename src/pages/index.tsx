@@ -35,7 +35,7 @@ const LandingPage = () => {
                 We carefully verify all listings to ensure they meet our quality standards, and we provide comprehensive information to help you make informed decisions about your housing options.
               </p>
             </div>
-            <div className="md:w-1/2 relative h-80 rounded-lg overflow-hidden shadow-xl">
+            <div className="hidden md:block md:w-1/2 relative h-80 rounded-lg overflow-hidden shadow-xl">
               <div className="absolute inset-0 flex items-center justify-center">
                 <Image src="/Haetae.jpeg" alt="Haetae" width={500} height={500} />
               </div>
@@ -94,10 +94,16 @@ const LandingPage = () => {
                 The main campus, Seongseo, spans over 1.5 million square meters and features modern facilities, including state-of-the-art libraries, research centers, sports complexes, and student housing. The campus is well-connected to the city center via public transportation, making it easily accessible for students living off-campus.
               </p>
             </div>
-            <div className="md:w-1/2 relative h-80 rounded-lg overflow-hidden shadow-xl">
-              <div className="absolute inset-0 flex items-center justify-center">
-                <Image src="/KMU2.jpg" alt="Keimyung University" width={800} height={800} />
-              </div>
+            <div className="hidden md:block md:w-1/2 relative h-80 rounded-lg overflow-hidden shadow-xl">
+              <Image
+                src="/KMU2.jpg"
+                alt="Keimyung University"
+                fill
+                sizes="(max-width: 768px) 100vw, 50vw"
+                style={{ objectFit: 'cover' }}
+                loading="eager"
+                className="opacity-90"
+              />
             </div>
           </div>
         </div>
