@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useAccommodation } from "@/hooks/useAccommodation";
 import { useEffect, useState } from "react";
 import { toast } from 'react-hot-toast';
+import { useCurrencyConvertor } from "@/hooks/useCurrencyConverter";
 
 import ImageSlider from "@/components/ImageSlider";
 import OptionsMenu from "@/components/OptionsMenu";
@@ -19,6 +20,7 @@ import { LuWashingMachine } from "react-icons/lu";
 import { isOwner } from '@/utils/authUtils';
 import { User } from "@/types/user";
 import { useUser } from "@/hooks/useUser";
+
 
 const AMENITIES = [
   { name: "TV", icon: <FaTv /> },
@@ -46,6 +48,26 @@ const AccommodationDetails = () => {
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const MapNoSSR = dynamic(() => import("@/components/Map"), { ssr: false });
   const [hostInfo, setHostInfo] = useState<User | null>(null);
+  const [euroPrice, setEuroPrice] = useState<number | null>(null);
+  const [euroDeposit, setEuroDeposit] = useState<number | null>(null);
+  
+  const { 
+    setAmount: setPriceAmount, 
+    setFromCurrency: setPriceFromCurrency, 
+    setToCurrency: setPriceToCurrency, 
+    result: priceResult, 
+    error: priceError, 
+    handleConvert: convertPrice 
+  } = useCurrencyConvertor();
+  
+  const { 
+    setAmount: setDepositAmount, 
+    setFromCurrency: setDepositFromCurrency, 
+    setToCurrency: setDepositToCurrency, 
+    result: depositResult, 
+    error: depositError, 
+    handleConvert: convertDeposit 
+  } = useCurrencyConvertor();
 
   useEffect(() => {
     if (id) {
@@ -63,6 +85,37 @@ const AccommodationDetails = () => {
       });
     }
   }, [accommodation, getUserById]);
+
+  useEffect(() => {
+    if (accommodation) {
+      if (accommodation.price_per_month) {
+        setPriceFromCurrency('KRW');
+        setPriceToCurrency('EUR');
+        setPriceAmount(accommodation.price_per_month);
+        convertPrice();
+      }
+      
+      if (accommodation.security_deposit) {
+        setDepositFromCurrency('KRW');
+        setDepositToCurrency('EUR');
+        setDepositAmount(accommodation.security_deposit);
+        convertDeposit();
+      }
+    }
+  }, [accommodation, setPriceFromCurrency, setPriceToCurrency, setPriceAmount, convertPrice, 
+      setDepositFromCurrency, setDepositToCurrency, setDepositAmount, convertDeposit]);
+
+  useEffect(() => {
+    if (priceResult !== null) {
+      setEuroPrice(priceResult);
+    }
+  }, [priceResult]);
+
+  useEffect(() => {
+    if (depositResult !== null) {
+      setEuroDeposit(depositResult);
+    }
+  }, [depositResult]);
 
   if (isLoading) return <Loading />;
 
@@ -168,8 +221,32 @@ const AccommodationDetails = () => {
               ))}
             </div>
             <h1 className="text-3xl font-semibold mt-4 mb-4 border-b border-gray-300">Pricing</h1>
-            <p className="text-lg font-semibold mt-2">₩{accommodation.price_per_month?.toLocaleString()} / month</p>
-            <p className="text-gray-600">Deposit: ₩{accommodation.security_deposit?.toLocaleString()}</p>
+            <p className="text-lg font-semibold mt-2">
+              {
+                euroPrice ? (
+                  <>
+                    ₩{accommodation.price_per_month?.toLocaleString()} / month - {euroPrice?.toLocaleString(undefined, { maximumFractionDigits: 2 })} € / month
+                  </>
+                ) : (
+                  <>
+                    ₩{accommodation.price_per_month?.toLocaleString()} / month {priceError ? " (Erreur de conversion)" : ""}
+                  </>
+                )
+              }
+            </p>
+            <p className="text-gray-600">
+              {
+                euroDeposit ? (
+                  <>
+                    Dépôt: ₩{accommodation.security_deposit?.toLocaleString()} - {euroDeposit?.toLocaleString(undefined, { maximumFractionDigits: 2 })} €
+                  </>
+                ) : (
+                  <>
+                    Dépôt: ₩{accommodation.security_deposit?.toLocaleString()} {depositError ? " (Erreur de conversion)" : ""}
+                  </>
+                )
+              }
+            </p>
             <p className="text-gray-600">{accommodation.bedrooms} bed • {accommodation.bathrooms} bath</p>
             <p className="text-gray-600">Location: {accommodation.location}</p>
             <h1 className="text-2xl font-bold mt-4 mb-4 border-b border-gray-300">MAP</h1>
@@ -183,6 +260,8 @@ const AccommodationDetails = () => {
           <ContactHostPanel 
             hostInfo={hostInfo} 
             accommodation={accommodation}
+            euroPrice={euroPrice}
+            euroDeposit={euroDeposit}
           />
         </div>
       </div>

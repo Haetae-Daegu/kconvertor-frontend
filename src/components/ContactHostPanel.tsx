@@ -5,10 +5,17 @@ import { Accommodation } from '@/types/accommodation';
 
 interface ContactHostPanelProps {
   hostInfo: User | null;
-  accommodation: Accommodation
+  accommodation: Accommodation;
+  euroPrice?: number | null;
+  euroDeposit?: number | null;
 }
 
-const ContactHostPanel: React.FC<ContactHostPanelProps> = ({ hostInfo, accommodation }) => {
+const ContactHostPanel: React.FC<ContactHostPanelProps> = ({ 
+  hostInfo, 
+  accommodation, 
+  euroPrice, 
+  euroDeposit 
+}) => {
 
   if (!hostInfo) {
     return <div className="p-4 bg-gray-100 rounded-lg">Host information not available</div>;
@@ -42,13 +49,37 @@ const ContactHostPanel: React.FC<ContactHostPanelProps> = ({ hostInfo, accommoda
               <span className="flex items-center text-sm font-medium text-gray-500 w-32">
                 Monthly Price:
               </span>
-              <span className="text-gray-900">{accommodation.price_per_month ? `₩${accommodation.price_per_month}` : 'Not provided'}</span>
+              {accommodation.price_per_month ? (
+                euroPrice ? (
+                  <span className="text-gray-900">
+                    ₩{accommodation.price_per_month.toLocaleString()} ({euroPrice.toLocaleString(undefined, { maximumFractionDigits: 2 })} €)
+                  </span>
+                ) : (
+                  <span className="text-gray-900">
+                    ₩{accommodation.price_per_month.toLocaleString()}
+                  </span>
+                )
+              ) : (
+                <span className="text-gray-900">Not provided</span>
+              )}
             </div>
             <div className="flex items-center">
               <span className="flex items-center text-sm font-medium text-gray-500 w-32">
                 Deposit Fee:
               </span>
-              <span className="text-gray-900">{accommodation.security_deposit ? `₩${accommodation.security_deposit}` : 'Not provided'}</span>
+              {accommodation.security_deposit ? (
+                euroDeposit ? (
+                  <span className="text-gray-900">
+                    ₩{accommodation.security_deposit.toLocaleString()} ({euroDeposit.toLocaleString(undefined, { maximumFractionDigits: 2 })} €)
+                  </span>
+                ) : (
+                  <span className="text-gray-900">
+                    ₩{accommodation.security_deposit.toLocaleString()}
+                  </span>
+                )
+              ) : (
+                <span className="text-gray-900">Not provided</span>
+              )}
             </div>
             <h1 className="text-lg font-semibold">Contact Host</h1>
             <div className="flex items-center">
