@@ -25,7 +25,7 @@ export default function Main() {
       <SEO />
       <div className="relative w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[350px] overflow-hidden">
         <Image
-          src="/cherry.jpg"
+          src="/KMU2.jpg"
           alt="KMU Banner"
           fill
           objectFit="cover"
