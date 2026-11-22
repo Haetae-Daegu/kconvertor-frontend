@@ -33,7 +33,7 @@
     "slick-carousel": "^1.8.1"
   },
   "engines": {
-    "node": "20.x"
+    "node": "22.x"
   },
   "devDependencies": {
     "@types/node": "^22.13.1",
