@@ -152,7 +152,7 @@ const LandingPage = () => {
             <Link href="/auth/register" className="px-8 py-3 bg-white text-blue-600 rounded-md font-semibold hover:bg-gray-100 transition-colors">
               Create Free Account
             </Link>
-            <Link href="/accommodations" className="px-8 py-3 border border-white text-white rounded-md font-semibold hover:bg-blue-700 transition-colors">
+            <Link href="/accommodations" className="px-8 py-3 bg-blue-600 text-white rounded-md font-semibold hover:bg-blue-700 transition-colors">
               Browse Accommodations
             </Link>
           </div>
